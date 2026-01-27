@@ -5,6 +5,8 @@ import {
   ChevronDown, FileJson, Printer, FileType, Table as TableIcon,
   Archive, Home, Search, Calculator, ArrowRight, Layers, Plus, Image as ImageIcon, Settings, X
 } from 'lucide-react';
+import html2pdf from 'html2pdf.js';
+import * as pdfjsLib from 'pdfjs-dist';
 
 // --- Global: Gemini API Configuration ---
 // --- Global: Gemini API Configuration ---
@@ -879,10 +881,20 @@ export default function App() {
               )}
               {viewState === 'pdf2estimate' && (
                 <button
-                  onClick={() => window.print()}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl font-bold shadow-lg hover:bg-black transition-all"
+                  onClick={() => {
+                    const element = document.getElementById('pdf2estimate-pdf');
+                    const opt = {
+                      margin: 0,
+                      filename: 'Estimate_Report.pdf',
+                      image: { type: 'jpeg', quality: 0.98 },
+                      html2canvas: { scale: 2, useCORS: true },
+                      jsPDF: { unit: 'px', format: [909, 1286], orientation: 'portrait' }
+                    };
+                    html2pdf().set(opt).from(element).save();
+                  }}
+                  className="flex items-center gap-2 px-6 py-2.5 bg-[#0c699e] text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-[#0a5c8a] transition-all active:scale-95"
                 >
-                  <Printer className="w-4 h-4" /> Print Estimate
+                  <Download className="w-4 h-4" /> Download PDF
                 </button>
               )}
               <button
