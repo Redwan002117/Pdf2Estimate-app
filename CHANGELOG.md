@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.7] - 2026-01-27
+### Documentation
+-   **Metadata**: Added custom **SVG Favicon** and **Banner** for better branding and social sharing.
+-   **Updated**: `index.html` now points to vector assets (`favicon.svg`, `banner.svg`).
+
 ## [v2.0.6] - 2026-01-27
 ### Documentation
 -   **Architecture**: Added custom **Animated SVG** diagram to `README.md` (`public/assets/architecture.svg`).

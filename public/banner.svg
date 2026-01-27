@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  
+  <!-- Abstract Grid Background -->
+  <path d="M0 0 L1200 0 L1200 630 L0 630 Z" fill="none" stroke="#1e293b" stroke-width="2" />
+  <path d="M100 0 L100 630 M200 0 L200 630 M300 0 L300 630 M400 0 L400 630 M500 0 L500 630 M600 0 L600 630 M700 0 L700 630 M800 0 L800 630 M900 0 L900 630 M1000 0 L1000 630 M1100 0 L1100 630" stroke="#334155" stroke-width="1" opacity="0.2" />
+  <path d="M0 100 L1200 100 M0 200 L1200 200 M0 300 L1200 300 M0 400 L1200 400 M0 500 L1200 500 M0 600 L1200 600" stroke="#334155" stroke-width="1" opacity="0.2" />
+
+  <!-- Content -->
+  <text x="600" y="280" font-family="'Arial', sans-serif" font-weight="900" font-size="80" fill="#fff" text-anchor="middle" letter-spacing="2">Pdf2Estimate Pro</text>
+  <text x="600" y="360" font-family="'Arial', sans-serif" font-weight="bold" font-size="40" fill="#3b82f6" text-anchor="middle" letter-spacing="1" filter="url(#glow)">AI-POWERED REPAIR INSIGHTS</text>
+  
+  <!-- Decorative Elements -->
+  <circle cx="100" cy="100" r="50" fill="#3b82f6" opacity="0.1" />
+  <circle cx="1100" cy="530" r="80" fill="#a855f7" opacity="0.1" />
+</svg>
