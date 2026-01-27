@@ -1,8 +1,9 @@
 version: '3.8'
 services:
-  app:
+  repair-base-server:
+    container_name: repair-basecontainer
     build: .
     image: ghcr.io/redwan002117/repair-base-app:main
     ports:
-      - "8080:80"
+      - "6969:80"
     restart: always
