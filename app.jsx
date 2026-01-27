@@ -167,6 +167,11 @@ const styles = `
     }
     
     @page { margin: 10mm; size: auto; }
+
+    .break-inside-avoid {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
   }
 `;
 
@@ -399,11 +404,11 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
         </table>
       </div>
 
-      <div className="mt-12 flex justify-end">
+      <div className="mt-12 flex justify-end break-inside-avoid page-break-inside-avoid">
         <div className="w-80">
           <div className="text-xl font-black mb-4 border-b-2 border-slate-800 pb-1">Estimate Totals:</div>
           <div className="flex justify-between py-2 border-b text-sm font-bold text-slate-600">
-            <span>Sales Tax (6.5%):</span>
+            <span>Sales Tax:</span>
             <span className="text-slate-900">${salesTax.toFixed(2)}</span>
           </div>
           <div className="flex justify-between py-3 mt-1 font-black text-xl text-[#1a4b8c]">
@@ -413,7 +418,10 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
         </div>
       </div>
 
-      <div className="print-footer absolute bottom-12 left-12 text-[10px] text-slate-400 font-bold italic">
+      {/* Spacer to prevent content from hitting the fixed footer */}
+      <div className="h-20 w-full"></div>
+
+      <div className="print-footer fixed bottom-0 left-0 right-0 bg-white p-4 text-[10px] text-slate-400 font-bold italic z-[10000]">
         © All rights reserved 2010-2026. BlueBook International. www.RepairBase.net
       </div>
     </div>
