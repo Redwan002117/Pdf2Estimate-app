@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.27] - 2026-01-27
+### Fixes
+-   **Metadata**: Converted `og:image` and `twitter:image` paths to **Absolute URLs**.
+    -   **Change**: `/banner.svg` -> `https://bid.rico.bd/banner.svg`.
+    -   **Reason**: Facebook/LinkedIn crawlers strictly require absolute URLs to render images.
+
 ## [v2.0.26] - 2026-01-27
 ### Visuals
 -   **Banner**: Remastered `banner.svg` with **Advanced Animations**.
     -   **Radar**: Scan sweep effect using rotating gradients.
-    -   **Grid**: Moving perspective grid lines ("Tron" style).
+    -   **Grid**: Moving perspective lines ("Tron" style).
     -   **Particles**: Data stream dots converging on the core.
     -   **HUD**: "SYSTEM: ONLINE" blinking status text.
 -   **Metadata**: Fixed missing OGP tags (Retry).
