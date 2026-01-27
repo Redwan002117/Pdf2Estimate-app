@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.24] - 2026-01-27
+### Improvements
+-   **Logic**: Implemented **Smart Idempotency (Deep Compare)**.
+    -   **Scenario**: If `Current Version == Latest Version`:
+    -   **Action**: The script pulls silently to check if the image **Hash** changed (e.g., a rebuild of the same version).
+    -   **Result**:
+        -   Matches: "Images are bit-for-bit identical. No restart required." -> **Exits instantly**.
+        -   Differs: "Deep Hash Mismatch... Updating..." -> **Auto-Restarts**.
+    -   **Benefit**: Zero hassle. It *only* restarts if bits actually changed.
+
 ## [v2.0.23] - 2026-01-27
 ### Improvements
 -   **Logic**: Enabled **Smart Auto-Update**.

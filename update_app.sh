@@ -136,15 +136,26 @@ if command -v curl &> /dev/null; then
     echo ""
     
     if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]]; then
-        echo -e "${GREEN}✅ You are already up to date!${NC}"
-        echo ""
-        read -p "Do you want to FORCE a re-install/restart? (y/N) " -n 1 -r
-        echo ""
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            echo "Exiting."
+        echo -e "${GREEN}✅ Version numbers match. Verifying image integrity...${NC}"
+        
+        # Capture current image ID
+        CURRENT_IMAGE_ID=$(docker images -q ghcr.io/redwan002117/pdf2estimate-app:main)
+        
+        # Pull latest
+        info "Checking remote registry for layer changes..."
+        docker compose pull -q
+        
+        # Capture new image ID
+        NEW_IMAGE_ID=$(docker images -q ghcr.io/redwan002117/pdf2estimate-app:main)
+        
+        if [[ "$CURRENT_IMAGE_ID" == "$NEW_IMAGE_ID" ]]; then
+            success "Images are bit-for-bit identical."
+            info "No restart required. Exiting."
             exit 0
+        else
+            warn "Deep Hash Mismatch: Remote image has changed (rebuilt). Updating..."
+            FORCE_UPDATE="y"
         fi
-        FORCE_UPDATE="y"
     else
         echo -e "${YELLOW}⚠️  Update Available! (Auto-starting update...)${NC}"
         echo "$CONTENT" | grep -A 10 "## \[" | head -n 10
