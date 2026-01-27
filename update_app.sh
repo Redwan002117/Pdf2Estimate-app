@@ -146,19 +146,13 @@ if command -v curl &> /dev/null; then
         fi
         FORCE_UPDATE="y"
     else
-        echo -e "${YELLOW}⚠️  Update Available!${NC}"
+        echo -e "${YELLOW}⚠️  Update Available! (Auto-starting update...)${NC}"
         echo "$CONTENT" | grep -A 10 "## \[" | head -n 10
         echo -e "${CYAN}------------------${NC}"
         
-        # Interactive Prompt
-        echo ""
-        echo -e "An update check compares your local image with the remote registry."
-        read -p "Do you want to check and pull updates now? (Y/n) " -n 1 -r
-        echo ""
-        if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ -n $REPLY ]]; then
-            info "Update cancelled by user."
-            exit 0
-        fi
+        # Auto-proceed (No prompt needed for genuine updates)
+        echo "Proceeding with update in 3 seconds..."
+        sleep 3
     fi
 else
     echo "Curl not found, skipping preview."

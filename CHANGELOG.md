@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.23] - 2026-01-27
+### Improvements
+-   **Logic**: Enabled **Smart Auto-Update**.
+    -   **Change**: Removed the `(Y/n)` confirmation prompt when an update is actually available.
+    -   **Behavior**: If a new version is detected, it shows the Changelog and **automatically proceeds** with the update (after a 3-second courtesy delay).
+    -   **Retained**: The "Force Reinstall?" prompt is kept safe (only asks if you are already up-to-date).
+
 ## [v2.0.22] - 2026-01-27
 ### Improvements
 -   **Script**: Added **Cache Busting** (`?t=timestamp`) to `update_app.sh`.
