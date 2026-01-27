@@ -2,6 +2,7 @@ version: '3.8'
 services:
   app:
     build: .
+    image: ghcr.io/redwan002117/repair-base-app:main
     ports:
       - "8080:80"
     restart: always
