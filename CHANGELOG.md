@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.6] - 2026-01-27
+### Documentation
+-   **Architecture**: Added custom **Animated SVG** diagram to `README.md` (`public/assets/architecture.svg`).
+-   **Polishing**: Enhanced visuals with dark-mode optimized System Architecture flow.
+
 ## [v2.0.5] - 2026-01-27
 ### Security
 -   **Hardening**: Verified production build usage in `docker-compose.yml` (removed unused volume mounts).

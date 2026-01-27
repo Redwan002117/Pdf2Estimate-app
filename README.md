@@ -33,17 +33,7 @@
 ## ⚡ System Architecture
 
 <div align="center">
-  <pre>
-  ┌──────────────┐      ┌───────────────┐      ┌──────────────────┐
-  │   User Upload│─────▶│  React App    │─────▶│  Gemini AI API   │
-  │   (PDF/IMG)  │      │  (Vite Engine)│◀─────│ (Vision Analysis)│
-  └──────────────┘      └───────┬───────┘      └──────────────────┘
-                                │
-                        ┌───────▼───────┐
-                        │ Google Search │
-                        │   Agent Tool  │
-                        └───────────────┘
-  </pre>
+  <img src="https://raw.githubusercontent.com/Redwan002117/pdf2estimate-app/main/public/assets/architecture.svg" width="100%" alt="System Architecture Diagram" />
 </div>
 
 ## ✨ Mission Control Features

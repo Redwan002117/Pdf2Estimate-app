@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradBox" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#grad1)" rx="15" />
+
+  <!-- Connecting Lines -->
+  <path d="M150 200 L 250 200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M400 200 L 500 200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M650 200 L 750 200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+  
+  <!-- Back flow -->
+  <path d="M500 240 Q 425 280 350 240" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5" fill="none" opacity="0.6">
+    <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
+  </path>
+
+  <!-- Nodes -->
+  <!-- 1. Upload -->
+  <g transform="translate(50, 150)">
+    <rect width="100" height="100" rx="10" fill="url(#gradBox)" stroke="#94a3b8" stroke-width="2" />
+    <text x="50" y="45" font-family="Arial, sans-serif" font-size="12" fill="#e2e8f0" text-anchor="middle" font-weight="bold">USER</text>
+    <text x="50" y="65" font-family="Arial, sans-serif" font-size="24" fill="#60a5fa" text-anchor="middle">📂</text>
+    <text x="50" y="85" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Upload PDF/Img</text>
+  </g>
+
+  <!-- 2. Frontend App -->
+  <g transform="translate(250, 150)">
+    <rect width="150" height="100" rx="10" fill="url(#gradBox)" stroke="#3b82f6" stroke-width="3" filter="url(#glow)" />
+    <text x="75" y="40" font-family="Arial, sans-serif" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">Pdf2Estimate Pro</text>
+    <text x="75" y="65" font-family="Arial, sans-serif" font-size="10" fill="#cbd5e1" text-anchor="middle">React + Vite</text>
+    <text x="75" y="80" font-family="Arial, sans-serif" font-size="10" fill="#cbd5e1" text-anchor="middle">Frontend Processing</text>
+  </g>
+
+  <!-- 3. Gemini AI -->
+  <g transform="translate(500, 150)">
+    <rect width="150" height="100" rx="10" fill="url(#gradBox)" stroke="#a855f7" stroke-width="3" filter="url(#glow)" />
+    <text x="75" y="40" font-family="Arial, sans-serif" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">Gemini AI 🧠</text>
+    <text x="75" y="65" font-family="Arial, sans-serif" font-size="10" fill="#e9d5ff" text-anchor="middle">Image Analysis</text>
+    <text x="75" y="80" font-family="Arial, sans-serif" font-size="10" fill="#e9d5ff" text-anchor="middle">Data Extraction</text>
+  </g>
+
+  <!-- Data Particles Animation -->
+  <circle r="4" fill="#60a5fa" filter="url(#glow)">
+    <animateMotion dur="2s" repeatCount="indefinite" path="M150 200 L 250 200" />
+  </circle>
+  <circle r="4" fill="#a855f7" filter="url(#glow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="1s" path="M400 200 L 500 200" />
+  </circle>
+  <circle r="4" fill="#3b82f6" filter="url(#glow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="2s" path="M500 240 Q 425 280 350 240" />
+  </circle>
+
+  <!-- 4. Output -->
+  <g transform="translate(700, 160)">
+    <path d="M0 0 L40 0 L50 10 L50 60 L0 60 Z" fill="#fff" stroke="#cbd5e1" />
+    <path d="M40 0 L40 10 L50 10" fill="none" stroke="#94a3b8" />
+    <text x="25" y="35" font-family="Arial, sans-serif" font-size="10" fill="#ef4444" font-weight="bold" text-anchor="middle">PDF</text>
+  </g>
+
+</svg>
