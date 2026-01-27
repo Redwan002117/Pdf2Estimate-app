@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.20] - 2026-01-27
+### Visuals
+-   **Banner**: Redesigned `banner.svg` with a **Premium, High-Fidelity Futuristic Look**.
+-   **Details**:
+    -   Added "Bloom/Glow" neon filters.
+    -   Implemented animated "PDF -> Excel" flow visualization.
+    -   Reverted `index.html` to point to the new SVG (since PNG generation is unavailable).
+
 ## [v2.0.19] - 2026-01-27
 ### Features
 -   **Script**: Implemented **Local Version Tracking** in `update_app.sh`.
