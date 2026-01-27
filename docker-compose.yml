@@ -6,6 +6,11 @@ services:
     image: ghcr.io/redwan002117/repair-base-app:main
     ports:
       - "6969:80"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - VITE_GEMINI_API_KEY=
+    command: npm run preview
     restart: unless-stopped
 
 # CasaOS Metadata
@@ -14,29 +19,16 @@ x-casaos:
     - amd64
     - arm64
     - arm
-  main: repair-base-app
+  main: repair-base-server
   description:
     en: "RepairBase Pro is an AI-powered repair estimate converter tool."
   tagline:
     en: "AI Repair Estimate Converter"
   developer: "Redwan"
   author: "Redwan"
-  icon: "https://raw.githubusercontent.com/Redwan002117/repair-base-app/main/public/vite.svg" # Placeholder icon, ideally should be a real URL
+  icon: "https://raw.githubusercontent.com/Redwan002117/repair-base-app/main/public/vite.svg"
   thumbnail: "https://raw.githubusercontent.com/Redwan002117/repair-base-app/main/public/vite.svg"
   title:
     en: "RepairBase Pro"
   category: "Productivity"
   port_map: "6969"
-  volumes:
-    - container: "/app/data"
-      description:
-        en: "Storage for app data"
-  envs:
-    - container: "VITE_GEMINI_API_KEY"
-      description:
-        en: "Google Gemini API Key (Optional override)"
-  devices: []
-  cap_add: []
-  network_model: "bridge"
-  privileged: false
-  run_command: "npm run preview" # Explicit command if needed, though Dockerfile default is used usually
