@@ -175,8 +175,8 @@ fi
 echo ""
 
 # 4. Restart Application
-info "Applying updates (Restarting container)..."
-if docker compose up -d --remove-orphans; then
+info "Applying updates (Forcing container restart)..."
+if docker compose up -d --force-recreate --remove-orphans; then
     success "Container restart command sent."
 else
     error "Failed to restart container."

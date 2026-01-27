@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.21] - 2026-01-27
+### Fixes
+-   **Script**: Updated `update_app.sh` to use `docker compose up -d --force-recreate`.
+-   **Resolution**: Ensures the container *actually* restarts every time the update script runs, fixing the "Restarting..." log discrepancy where Docker would sometimes skip the restart if no files changed.
+
 ## [v2.0.20] - 2026-01-27
 ### Visuals
 -   **Banner**: Redesigned `banner.svg` with a **Premium, High-Fidelity Futuristic Look**.
