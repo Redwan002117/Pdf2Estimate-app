@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.28] - 2026-01-27
+### Fixes
+-   **Icons**: Converted Favicon paths to **Absolute URLs** (`https://bid.rico.bd/favicon.svg`).
+    -   **Fix**: Ensures icons load correctly even on deep sub-paths or redirects.
+    -   **Correction**: Removed invalid `image/png` link type causing MIME mismatches (now correctly uses `svg+xml`).
+
 ## [v2.0.27] - 2026-01-27
 ### Fixes
 -   **Metadata**: Converted `og:image` and `twitter:image` paths to **Absolute URLs**.
