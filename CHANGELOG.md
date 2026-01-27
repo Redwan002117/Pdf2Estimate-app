@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.13] - 2026-01-27
+### Features
+-   **Script**: Added **Self-Update** capability to `update_app.sh`.
+-   **Functionality**: The script now checks GitHub for a newer version of *itself* before running, ensuring the user always has the latest update logic without manual intervention.
+
 ## [v2.0.12] - 2026-01-27
 ### Enhancements
 -   **Scripts**: Completely rewrote `update_app.sh` into a "Smart Update Utility".

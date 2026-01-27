@@ -41,6 +41,33 @@ echo -e "${BLUE}==========================================${NC}"
 echo "Log file: $LOG_FILE"
 echo ""
 
+# 0. Self-Update Check
+info "Checking for update script upgrades..."
+REMOTE_URL="https://raw.githubusercontent.com/Redwan002117/Pdf2Estimate-app/main/update_app.sh"
+TEMP_SCRIPT="/tmp/update_app_new.sh"
+
+if command -v wget &> /dev/null; then
+    wget -q -O "$TEMP_SCRIPT" "$REMOTE_URL"
+    if [ -s "$TEMP_SCRIPT" ]; then
+        # Compare checksums if possible, or just size/diff
+        if ! cmp -s "update_app.sh" "$TEMP_SCRIPT"; then
+            warn "New version of update_app.sh detected. Update initiated."
+            mv "$TEMP_SCRIPT" "update_app.sh"
+            chmod +x "update_app.sh"
+            success "Script updated successfully. Reloading..."
+            exec ./update_app.sh
+        else
+            info "Update script is already latest."
+            rm -f "$TEMP_SCRIPT"
+        fi
+    else
+        warn "Failed to download update script check."
+    fi
+else
+    warn "Wget not found. Skipping self-update check."
+fi
+echo ""
+
 # 1. Pre-flight Checks
 info "Starting pre-flight checks..."
 
