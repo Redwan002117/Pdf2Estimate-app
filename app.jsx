@@ -676,7 +676,7 @@ export default function App() {
         const searchResult = await callGemini({
           contents: [{
             role: "user",
-            parts: [{ text: `You are a real estate assistant. Retrieve the exact following details for the property at "${address}" from sources like Zillow, Redfin, Realtor.com: Structure Type, Stories, Living Area (sqft), Bedrooms, Baths, Year Built, Build Quality. \n\nReturn ONLY a valid JSON object with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
+            parts: [{ text: `Act as a real estate data analyst. Perform a targeted search for the specific property located at: "${address}". \n\nLocate the specific listing on Zillow, Redfin, or Realtor.com to ensure accuracy. Extract the following technical specifications:\n- Structure Type (e.g., Single Family, Condo)\n- Stories\n- Living Area (Square Feet)\n- Bedrooms\n- Bathrooms\n- Year Built\n- Quality Class (estimate based on description if explicitly stated, otherwise leave blank)\n\nStrictly output valid JSON only with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
           }],
           tools: [{ "google_search": {} }],
           generationConfig: { responseMimeType: "application/json" }
@@ -695,7 +695,7 @@ export default function App() {
       const fallbackResult = await callGemini({
         contents: [{
           role: "user",
-          parts: [{ text: `You are a real estate assistant. Estimate or retrieve details for the property at "${address}" based on your internal knowledge: Structure Type, Stories, Living Area (sqft), Bedrooms, Baths, Year Built, Build Quality. \n\nReturn ONLY a valid JSON object with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
+          parts: [{ text: `Act as a real estate data analyst. Estimate or retrieve details for the specific property at "${address}" based on your internal knowledge. Prioritize exact matches from your training data (Zillow/Redfin records).\n\nRequired Data:\n- Structure Type\n- Stories\n- Living Area (sqft)\n- Bedrooms\n- Bathrooms\n- Year Built\n- Build Quality\n\nReturn ONLY a valid JSON object with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
         }],
         generationConfig: { responseMimeType: "application/json" }
       });
