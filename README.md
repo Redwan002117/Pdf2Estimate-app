@@ -25,7 +25,7 @@
     *   *Alternatively, download the `docker-compose.yml` file and upload it.*
 6.  CasaOS will automatically parse the settings (Icon, Name, Port 6969).
 7.  Click **"Install"**.
-8.  🎉 Once done, click the **RepairBase Pro** icon on your dashboard to open it.
+8.  🎉 Once done, click the **Pdf2Estimate Pro** icon on your dashboard to open it.
 
 ### Option 3: CasaOS (Via Terminal / SSH) 💻
 If the UI import fails, you can install it via the terminal.

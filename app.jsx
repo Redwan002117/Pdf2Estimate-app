@@ -803,7 +803,7 @@ export default function App() {
           </div>
           <div>
             <h1 className="text-xl font-black text-[#1a4b8c] tracking-tight">Pdf2Estimate</h1>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">RepairBase Pro Converter</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Pdf2Estimate Pro Converter</p>
           </div>
         </div>
 
