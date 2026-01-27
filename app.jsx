@@ -503,7 +503,7 @@ export default function App() {
   // Settings State
   const [showSettings, setShowSettings] = useState(false);
   const [logoSettings, setLogoSettings] = useState({ url: '' });
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem('gemini_api_key') || '');
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem('gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '');
 
   const updateApiKey = (newKey) => {
     setApiKey(newKey);
