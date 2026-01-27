@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.15] - 2026-01-27
+### Enhancements
+-   **Script**: Extended **Deployment Summary** in `update_app.sh`.
+-   **Details**: Now includes **Image Size**, **Container Disk Usage** (writable layer), and **Volume Mounts** inspection.
+
 ## [v2.0.14] - 2026-01-27
 ### Enhancements
 -   **Script**: Added **Deployment Summary** to `update_app.sh`.

@@ -162,10 +162,18 @@ echo ""
 echo -e "${CYAN}==========================================${NC}"
 echo -e "${CYAN}           DEPLOYMENT SUMMARY             ${NC}"
 echo -e "${CYAN}==========================================${NC}"
+CONTAINER_ID=$(docker ps --filter "name=$CONTAINER_NAME" --format "{{.ID}}")
+IMAGE_NAME=$(docker ps --filter "name=$CONTAINER_NAME" --format "{{.Image}}")
+
 echo "Container:   $CONTAINER_NAME"
 echo "Status:      $(docker ps --filter "name=$CONTAINER_NAME" --format "{{.Status}}")"
-echo "Image ID:    $(docker ps --filter "name=$CONTAINER_NAME" --format "{{.Image}}")"
+echo "Image:       $IMAGE_NAME"
+echo "Image Size:  $(docker images --format "{{.Size}}" $IMAGE_NAME | head -n 1)"
+echo "Disk Usage:  $(docker ps --filter "name=$CONTAINER_NAME" --size --format "{{.Size}}")"
 echo "Ports:       $(docker ps --filter "name=$CONTAINER_NAME" --format "{{.Ports}}")"
-echo "Access URL:  http://localhost:6969"
+echo -e "${CYAN}------------------------------------------${NC}"
+echo "Mounts:"
+docker inspect --format '{{range .Mounts}} - {{.Source}} -> {{.Destination}} ({{.Type}}){{println}}{{end}}' $CONTAINER_ID
 echo -e "${CYAN}==========================================${NC}"
+echo "Access URL:  http://localhost:6969"
 exit 0
