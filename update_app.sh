@@ -108,8 +108,38 @@ else
 fi
 echo ""
 
+# 2. Check for Updates
+info "Checking for application updates..."
+
+CHANGELOG_URL="https://raw.githubusercontent.com/Redwan002117/Pdf2Estimate-app/main/CHANGELOG.md"
+LOCAL_IMAGE_ID=$(docker images -q ghcr.io/redwan002117/pdf2estimate-app:main)
+
+# Fetch latest changelog preview
+echo -e "${CYAN}--- WHAT'S NEW ---${NC}"
+if command -v curl &> /dev/null; then
+    curl -s "$CHANGELOG_URL" | grep -A 10 "## \[" | head -n 10
+else
+    echo "Curl not found, skipping changelog preview."
+fi
+echo -e "${CYAN}------------------${NC}"
+
+# Interactive Prompt
+echo ""
+echo -e "An update check compares your local image with the remote registry."
+read -p "Do you want to check and pull updates now? (Y/n) " -n 1 -r
+echo ""
+if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ -n $REPLY ]]; then
+    info "Update cancelled by user."
+    exit 0
+fi
+
+# 3. Pull Updates
 # 3. Pull Updates
 info "Pulling latest images from GHCR..."
+
+# Attempt to get download size (Experimental)
+# docker manifest inspect -v ghcr.io/redwan002117/pdf2estimate-app:main | grep "size" || true
+
 docker compose pull
 # Check exit code
 if [ $? -eq 0 ]; then

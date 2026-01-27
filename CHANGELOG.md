@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.17] - 2026-01-27
+### Features
+-   **Script**: Added **Interactive Update Mode** to `update_app.sh`.
+-   **Functionality**:
+    -   **Changelog Preview**: Fetches and displays the latest "WHAT'S NEW" from GitHub before updating.
+    -   **Confirmation**: Asks the user `Do you want to check and pull updates now? (Y/n)` before downloading large files.
+
 ## [v2.0.16] - 2026-01-27
 ### Documentation
 -   **Social**: Updated `index.html` metadata to point to `banner.png` (Raster) instead of `banner.svg`.
