@@ -808,6 +808,22 @@ export default function App() {
         </div>
 
         <div className="flex items-center gap-2">
+          {currentFiles.length > 0 && (
+            <button
+              onClick={() => {
+                setViewState('upload');
+                setCurrentFiles([]);
+                setPdfDoc(null);
+                setExtractedData(null);
+                setRepairData(null);
+              }}
+              className="flex items-center gap-2 text-slate-400 hover:text-red-500 font-bold text-xs uppercase tracking-wider transition-colors mr-2"
+            >
+              <Trash2 className="w-4 h-4" />
+              Clear
+            </button>
+          )}
+
           {/* Settings Button */}
           <div className="relative">
             <button
