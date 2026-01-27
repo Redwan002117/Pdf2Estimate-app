@@ -1,30 +1,11 @@
-# 🛠️ RepairBase Pro
+# 🛠️ Pdf2Estimate Pro
 
-**RepairBase Pro** is a powerful React application designed to streamline the creation of repair estimates. It leverages AI to extract data from PDFs/Images and automatically research property details.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**Pdf2Estimate Pro** is a powerful React application designed to streamline the creation of repair estimates. It leverages AI to extract data from PDFs/Images and automatically research property details.
 
 ## ✨ Features
 
--   **🤖 AI Extraction**: Upload PDF or Image estimates to automatically extract line items.
--   **🪄 Property Auto-Fill**: "Magic Wand" feature uses **AI agents** to research property facts (Year Built, Square Footage, etc.) from real estate sources.
--   **📄 Print-Ready**: Professional print layout with page breaks, totals, and disclaimer.
--   **🐳 Dockerized**: Easy deployment with Docker and CasaOS support.
-
-## 🚀 Installation Guide
-
-### Option 1: Docker (Recommended) 🐳
-This is the easiest way to run the app. You do **NOT** need to install Node.js.
-
-**Prerequisites:**
-1.  **Download & Install Docker Desktop**:
-    *   **🪟 Windows**: [Download here](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe). Run the installer and strictly follow the on-screen instructions. Restart your computer after installation.
-    *   **🍎 Mac**: [Download here](https://desktop.docker.com/mac/main/amd64/Docker.dmg). Drag the icon to Applications.
-2.  **Start Docker**: Search for "Docker Desktop" in your start menu and open it. Wait until you see the green bar saying "Engine running".
-
-**How to Run the App:**
-1.  📥 **Download** this project (Click "Code" -> "Download ZIP" and extract it, or use git clone).
-2.  📂 **Open** your folder in VS Code or File Explorer.
-3.  ✅ **Right-click** inside the folder and verify you see files like `docker-compose.yml`.
-4.  💻 **Open a terminal** (Command Prompt/PowerShell) in this folder.
 5.  ⌨️ **Type** the following command and hit Enter:
     ```bash
     docker compose up --build

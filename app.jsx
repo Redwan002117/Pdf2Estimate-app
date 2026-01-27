@@ -43,7 +43,7 @@ const styles = `
     margin-bottom: 2rem; position: relative; background: white;
     border-radius: 8px; overflow: hidden;
   }
-  .repairbase-paper {
+  .pdf2estimate-paper {
     background: white;
     width: 850px;
     min-height: 1100px;
@@ -54,14 +54,14 @@ const styles = `
     color: #333;
     position: relative;
   }
-  .repairbase-table {
+  .pdf2estimate-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
     margin-bottom: 10px;
   }
   /* Table Header Centering */
-  .repairbase-table th {
+  .pdf2estimate-table th {
     background: #f1f5f9;
     border: 1px solid #cbd5e1;
     padding: 8px;
@@ -71,7 +71,7 @@ const styles = `
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  .repairbase-table td {
+  .pdf2estimate-table td {
     border: 1px solid #e2e8f0;
     padding: 8px;
     vertical-align: top;
@@ -124,12 +124,12 @@ const styles = `
       padding-bottom: 20mm; 
     }
 
-    /* Target the specific repairbase container */
-    #repairbase-pdf, #repairbase-pdf * {
+    /* Target the specific pdf2estimate container */
+    #pdf2estimate-pdf, #pdf2estimate-pdf * {
       visibility: visible;
     }
 
-    #repairbase-pdf {
+    #pdf2estimate-pdf {
       position: absolute;
       left: 0;
       top: 0;
@@ -177,7 +177,7 @@ const styles = `
     }
 
     /* CRITICAL FIX: Disable transforms/animations so 'fixed' footer works relative to page, not container */
-    .animate-fade-in, .repairbase-paper {
+    .animate-fade-in, .pdf2estimate-paper {
       animation: none !important;
       transform: none !important;
       transition: none !important;
@@ -258,7 +258,7 @@ const ExtractionPreview = ({ data, onProceed, onBack, isProcessing }) => {
             disabled={isProcessing}
             className="flex items-center gap-2 bg-[#1a4b8c] text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-800 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Generate RepairBase PDF"} <ArrowRight className="w-4 h-4" />
+            {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Generate Pdf2Estimate PDF"} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -266,8 +266,8 @@ const ExtractionPreview = ({ data, onProceed, onBack, isProcessing }) => {
   );
 };
 
-// --- Component: RepairBase Specialized View (Step 2) ---
-const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
+// --- Component: Pdf2Estimate Specialized View (Step 2) ---
+const Pdf2EstimateView = ({ data, onUpdate, logoSettings, onAutofill }) => {
   const [isFetching, setIsFetching] = useState(false);
   const taxRate = 0.065;
   const items = Array.isArray(data.items) ? data.items : [];
@@ -288,7 +288,7 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
   else if (data.address && typeof data.address === 'object') addressDisplay = Object.values(data.address).join(' ');
 
   return (
-    <div className="repairbase-paper animate-fade-in" id="repairbase-pdf">
+    <div className="pdf2estimate-paper animate-fade-in" id="pdf2estimate-pdf">
       <div className="flex justify-between items-start mb-8">
         <div>
           {/* LOGO SECTION */}
@@ -297,8 +297,8 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
               <img src={logoSettings.url} alt="Logo" className="h-16 w-auto object-contain" />
             ) : (
               <div className="flex items-center gap-1">
-                <div className="bg-[#1a4b8c] text-white px-2 py-1 rounded text-sm font-bold italic">Repair</div>
-                <div className="text-2xl font-black italic tracking-tighter text-[#1a4b8c]">BASE</div>
+                <div className="bg-[#1a4b8c] text-white px-2 py-1 rounded text-sm font-bold italic">Pdf2</div>
+                <div className="text-2xl font-black italic tracking-tighter text-[#1a4b8c]">Estimate</div>
               </div>
             )}
           </div>
@@ -329,7 +329,7 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
           <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
             <span className="text-slate-500 font-bold">Date:</span>
             <input type="text" className="fillable-input text-right" defaultValue={new Date().toLocaleDateString()} />
-            <span className="text-slate-500 font-bold">RepairBase ID:</span>
+            <span className="text-slate-500 font-bold">Pdf2Estimate ID:</span>
             <input type="text" className="fillable-input text-right" placeholder="1558326" />
             <span className="text-slate-500 font-bold">Vendor Num:</span>
             <input type="text" className="fillable-input text-right" placeholder="5433" />
@@ -347,7 +347,7 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
 
       <div className="mb-8">
         <div className="text-lg font-bold text-slate-800 mb-3">Property Characteristics:</div>
-        <table className="repairbase-table">
+        <table className="pdf2estimate-table">
           <thead>
             <tr>
               <th colSpan={2}>Structure Type</th>
@@ -384,7 +384,7 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
       <div className="mb-8">
         <div className="text-center py-2 border-y-2 border-slate-300 font-bold text-xl mb-6 tracking-wide uppercase">Repair Estimate</div>
         <div className="text-[#1a4b8c] font-black text-sm uppercase mb-3 px-1">Entire House</div>
-        <table className="repairbase-table">
+        <table className="pdf2estimate-table">
           <thead>
             <tr>
               <th className="w-12 text-center">Item #</th>
@@ -429,7 +429,7 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
       </div>
 
       <div className="mt-24 pt-8 border-t border-slate-100 text-left text-[10px] text-slate-400 font-bold italic no-print-break">
-        © All rights reserved 2010-2026. BlueBook International. www.RepairBase.net
+        © All rights reserved 2010-2026. Pdf2Estimate.
       </div>
     </div>
   );
@@ -490,7 +490,7 @@ export default function App() {
   const pdfjs = useScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', 'pdfjsLib');
 
   const [currentFiles, setCurrentFiles] = useState([]);
-  const [viewState, setViewState] = useState('upload'); // upload, preview, extraction, repairbase
+  const [viewState, setViewState] = useState('upload'); // upload, preview, extraction, pdf2estimate
   const [pdfDoc, setPdfDoc] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progressMsg, setProgressMsg] = useState('');
@@ -629,7 +629,7 @@ export default function App() {
     }
   };
 
-  const finalizeRepairBase = async () => {
+  const finalizePdf2Estimate = async () => {
     if (!extractedData) return;
     setIsProcessing(true);
     setProgressMsg(`Researching Property: ${extractedData.address}...`);
@@ -670,7 +670,7 @@ export default function App() {
         items: extractedData.items,
         characteristics: characteristics
       });
-      setViewState('repairbase');
+      setViewState('pdf2estimate');
       setIsProcessing(false);
     }
   };
@@ -870,7 +870,7 @@ export default function App() {
                   <Sparkles className="w-4 h-4" /> Extract to HTML
                 </button>
               )}
-              {viewState === 'repairbase' && (
+              {viewState === 'pdf2estimate' && (
                 <button
                   onClick={() => window.print()}
                   className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl font-bold shadow-lg hover:bg-black transition-all"
@@ -947,15 +947,15 @@ export default function App() {
         {viewState === 'extraction' && extractedData && (
           <ExtractionPreview
             data={extractedData}
-            onProceed={finalizeRepairBase}
+            onProceed={finalizePdf2Estimate}
             onBack={() => setViewState('preview')}
             isProcessing={isProcessing}
           />
         )}
 
-        {viewState === 'repairbase' && repairData && (
+        {viewState === 'pdf2estimate' && repairData && (
           <div className="w-full overflow-x-auto pb-32">
-            <RepairBaseView
+            <Pdf2EstimateView
               data={repairData}
               onUpdate={(updates) => setRepairData({ ...repairData, ...updates })}
               logoSettings={logoSettings}

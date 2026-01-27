@@ -1,7 +1,7 @@
 services:
-  repair-base-server:
-    container_name: repair-base-container
-    image: ghcr.io/redwan002117/repair-base-app:main
+  pdf2estimate-server:
+    container_name: pdf2estimate-container
+    image: ghcr.io/redwan002117/pdf2estimate-app:main
     ports:
       - "6969:80"
     volumes:
@@ -17,16 +17,16 @@ x-casaos:
     - amd64
     - arm64
     - arm
-  main: repair-base-server
+  main: pdf2estimate-server
   description:
-    en: "RepairBase Pro is an AI-powered repair estimate converter tool."
+    en: "Pdf2Estimate is an AI-powered repair estimate converter tool."
   tagline:
     en: "AI Repair Estimate Converter"
   developer: "Redwan"
   author: "Redwan"
-  icon: "https://raw.githubusercontent.com/Redwan002117/repair-base-app/main/public/vite.svg"
-  thumbnail: "https://raw.githubusercontent.com/Redwan002117/repair-base-app/main/public/vite.svg"
+  icon: "https://raw.githubusercontent.com/Redwan002117/pdf2estimate-app/main/public/vite.svg"
+  thumbnail: "https://raw.githubusercontent.com/Redwan002117/pdf2estimate-app/main/public/vite.svg"
   title:
-    en: "RepairBase Pro"
+    en: "Pdf2Estimate Pro"
   category: "Productivity"
   port_map: "6969"
