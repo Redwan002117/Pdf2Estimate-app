@@ -119,6 +119,8 @@ const styles = `
       background: white;
       height: 100%;
       overflow: visible;
+      /* Ensure content doesn't overlap the fixed footer on any page */
+      padding-bottom: 20mm; 
     }
 
     /* Target the specific repairbase container */
