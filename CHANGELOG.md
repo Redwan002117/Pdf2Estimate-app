@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.25] - 2026-01-27
+### Documentation
+-   **Social Metadata**: Added missing Open Graph tags to clear debugger warnings.
+    -   `og:site_name`: "Pdf2Estimate"
+    -   `og:locale`: "en_US"
+    -   `og:image:alt`: Accessibility text for the banner.
+-   **Resolution**: Fixes "Missing Properties" warnings in Facebook/LinkedIn debuggers.
+
 ## [v2.0.24] - 2026-01-27
 ### Improvements
 -   **Logic**: Implemented **Smart Idempotency (Deep Compare)**.
