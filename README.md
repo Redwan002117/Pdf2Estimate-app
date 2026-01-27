@@ -1,61 +1,67 @@
-# RepairBase Pro
+# 🛠️ RepairBase Pro
 
-RepairBase Pro is a powerful React application designed to streamline the creation of repair estimates. It leverages AI to extract data from PDFs/Images and automatically research property details.
+**RepairBase Pro** is a powerful React application designed to streamline the creation of repair estimates. It leverages AI to extract data from PDFs/Images and automatically research property details.
 
-## Features
+## ✨ Features
 
--   **AI Extraction**: Automatically extracts repair items and costs from PDF or Image estimates using Gemini AI.
--   **Auto-Fill Property Info**: Automatically fetches property characteristics (Bedrooms, Baths, Sqft, Year Built) given an address.
--   **PDF Generation**: Generates professional RepairBase PDF reports ready for printing.
--   **Smart Layout**: Optimizes layout for printing, ensuring headers/footers are correctly positioned.
--   **Security**: Your API Key is stored locally in your browser, not on a server.
+-   **🤖 AI Extraction**: Upload PDF or Image estimates to automatically extract line items.
+-   **🪄 Property Auto-Fill**: "Magic Wand" feature uses **AI agents** to research property facts (Year Built, Square Footage, etc.) from real estate sources.
+-   **📄 Print-Ready**: Professional print layout with page breaks, totals, and disclaimer.
+-   **🐳 Dockerized**: Easy deployment with Docker and CasaOS support.
 
-## Installation Guide
+## 🚀 Installation Guide
 
-### Option 1: Docker (Recommended)
-This is the easiest way to run the app. You do NOT need to install Node.js.
+### Option 1: Docker (Recommended) 🐳
+This is the easiest way to run the app. You do **NOT** need to install Node.js.
 
 **Prerequisites:**
 1.  **Download & Install Docker Desktop**:
-    *   **Windows**: [Download here](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe). Run the installer and strictly follow the on-screen instructions. Restart your computer after installation.
-    *   **Mac**: [Download here](https://desktop.docker.com/mac/main/amd64/Docker.dmg). Drag the icon to Applications.
+    *   **🪟 Windows**: [Download here](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe). Run the installer and strictly follow the on-screen instructions. Restart your computer after installation.
+    *   **🍎 Mac**: [Download here](https://desktop.docker.com/mac/main/amd64/Docker.dmg). Drag the icon to Applications.
 2.  **Start Docker**: Search for "Docker Desktop" in your start menu and open it. Wait until you see the green bar saying "Engine running".
 
 **How to Run the App:**
-1.  Download this project (Click "Code" -> "Download ZIP" and extract it, or use git clone).
-2.  Open your folder in VS Code or File Explorer.
-3.  **Right-click** inside the folder and verify you see files like `docker-compose.yml`.
-4.  Open a terminal (Command Prompt/PowerShell) in this folder.
-5.  Type the following command and hit Enter:
+1.  📥 **Download** this project (Click "Code" -> "Download ZIP" and extract it, or use git clone).
+2.  📂 **Open** your folder in VS Code or File Explorer.
+3.  ✅ **Right-click** inside the folder and verify you see files like `docker-compose.yml`.
+4.  💻 **Open a terminal** (Command Prompt/PowerShell) in this folder.
+5.  ⌨️ **Type** the following command and hit Enter:
     ```bash
     docker-compose up --build
     ```
-6.  Wait for the process to finish. It will download dependencies and start the server.
-7.  Once you see "Ready in ... ms", open your browser to: **[http://localhost:6969](http://localhost:6969)**.
+6.  ⏳ **Wait** for the process to finish. It will download dependencies and start the server.
+7.  🌐 **Success!** Once you see "Ready in ... ms", open your browser to: **[http://localhost:6969](http://localhost:6969)**.
 
-### Option 2: CasaOS (Home Server)
+### Option 2: CasaOS (Home Server) 🏠
 
 **Easy Import:**
 1.  Open your **CasaOS Dashboard**.
 2.  Click the `+` button to install a new app.
 3.  Select **"Custom Install"** (or "Docker Compose").
 4.  Click **"Import"** (top right corner usually).
-5.  Paste the contents of the [`docker-compose.yml`](https://github.com/Redwan002117/repair-base-app/blob/main/docker-compose.yml) file from this repository.
+5.  📋 **Paste** the contents of the [`docker-compose.yml`](https://github.com/Redwan002117/repair-base-app/blob/main/docker-compose.yml) file from this repository.
     *   *Alternatively, download the `docker-compose.yml` file and upload it.*
 6.  CasaOS will automatically parse the settings (Icon, Name, Port 6969).
 7.  Click **"Install"**.
-8.  Once done, click the **RepairBase Pro** icon on your dashboard to open it.
+8.  🎉 Once done, click the **RepairBase Pro** icon on your dashboard to open it.
 
 ---
 
-**Updating the App (Docker):**
-To get the latest version from GitHub:
-1.  **Windows**: Double-click the `update_app.bat` file in the project folder.
-2.  **Linux/Mac**: Run `./update_app.sh` in the terminal.
+## 🔄 Updating the App
+
+**Option 1: Windows Script (Easiest)**
+1.  Double-click `update_app.bat` in the folder.
+2.  It will pull changes and restart Docker automatically.
+
+**Option 2: Manual Update**
+```bash
+git pull
+docker-compose up --build -d
+```
 
 ---
 
-### Option 2: Local Development (For Developers)
+### Option 3: Local Development (For Developers) 👨‍💻
 Use this if you want to modify the code or run it without Docker.
 
 **Prerequisites:**
