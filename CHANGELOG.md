@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.12] - 2026-01-27
+### Enhancements
+-   **Scripts**: Completely rewrote `update_app.sh` into a "Smart Update Utility".
+-   **Features**:
+    -   **Pre-flight Checks**: Verifies Docker daemon, internet, and configuration before starting.
+    -   **Health Checks**: Waits for container stabilization and verifies "Running" status.
+    -   **Diagnostics**: Automatically captures and displays error logs if the update fails.
+    -   **Logging**: Writes all operations to `update_log.txt` for troubleshooting.
+
 ## [v2.0.11] - 2026-01-27
 ### Fixed
 -   **Rebrand**: Updated `update_app.sh` header text to "Pdf2Estimate Pro" (previously "Repair Base App").
