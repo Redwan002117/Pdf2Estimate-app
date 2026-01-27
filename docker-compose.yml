@@ -4,8 +4,6 @@ services:
     image: ghcr.io/redwan002117/pdf2estimate-app:main
     ports:
       - "6969:80"
-    volumes:
-      - ./data:/app/data
     environment:
       - VITE_GEMINI_API_KEY=change_me
 
