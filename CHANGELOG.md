@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.14] - 2026-01-27
+### Enhancements
+-   **Script**: Added **Deployment Summary** to `update_app.sh`.
+-   **Details**: Now displays detailed Container Name, Status (Uptime), Image ID, and Port Mappings upon successful update.
+
 ## [v2.0.13] - 2026-01-27
 ### Features
 -   **Script**: Added **Self-Update** capability to `update_app.sh`.

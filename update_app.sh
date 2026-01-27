@@ -10,6 +10,7 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Logging Function
@@ -109,7 +110,9 @@ echo ""
 
 # 3. Pull Updates
 info "Pulling latest images from GHCR..."
-if docker compose pull; then
+docker compose pull
+# Check exit code
+if [ $? -eq 0 ]; then
     success "Images downloaded successfully."
 else
     error "Failed to pull images."
@@ -136,28 +139,33 @@ sleep 10
 info "Running health check..."
 # Check if container is running
 if docker ps -f name=$CONTAINER_NAME -f status=running | grep -q $CONTAINER_NAME; then
-    success "Container '$CONTAINER_NAME' is UP and RUNNING."
+    success "Container '$CONTAINER_NAME' is UP."
     
     # Optional: Check logs for errors
     if docker logs --tail 10 $CONTAINER_NAME 2>&1 | grep -iE "error|exception|fail"; then
         warn "Potential issues detected in recent logs:"
         docker logs --tail 10 $CONTAINER_NAME
         echo ""
-        echo "Review full logs with: docker logs $CONTAINER_NAME"
     else
         success "No immediate errors found in logs."
     fi
 else
-    error "Container '$CONTAINER_NAME' failed to start or exited unexpectedly."
+    error "Container '$CONTAINER_NAME' failed to start."
     echo "---------------- DEBUG LOGS ----------------"
     docker logs --tail 50 $CONTAINER_NAME
     echo "--------------------------------------------"
     exit 1
 fi
-
 echo ""
-echo -e "${GREEN}==========================================${NC}"
-echo -e "${GREEN}       UPDATE COMPLETED SUCCESSFULLY      ${NC}"
-echo -e "${GREEN}==========================================${NC}"
-echo "App URL: http://localhost:6969"
+
+# 6. Deployment Summary
+echo -e "${CYAN}==========================================${NC}"
+echo -e "${CYAN}           DEPLOYMENT SUMMARY             ${NC}"
+echo -e "${CYAN}==========================================${NC}"
+echo "Container:   $CONTAINER_NAME"
+echo "Status:      $(docker ps --filter "name=$CONTAINER_NAME" --format "{{.Status}}")"
+echo "Image ID:    $(docker ps --filter "name=$CONTAINER_NAME" --format "{{.Image}}")"
+echo "Ports:       $(docker ps --filter "name=$CONTAINER_NAME" --format "{{.Ports}}")"
+echo "Access URL:  http://localhost:6969"
+echo -e "${CYAN}==========================================${NC}"
 exit 0
