@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.8] - 2026-01-27
+### SEO
+-   **Optimization**: Improved Title and Meta Description for better search ranking (Score Optimization).
+-   **Key Changes**: Added keywords "Excel Converter", "CSV", and "Insurance Supplements" to snippets.
+
 ## [v2.0.7] - 2026-01-27
 ### Documentation
 -   **Metadata**: Added custom **SVG Favicon** and **Banner** for better branding and social sharing.
