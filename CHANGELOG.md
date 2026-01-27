@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.16] - 2026-01-27
+### Documentation
+-   **Social**: Updated `index.html` metadata to point to `banner.png` (Raster) instead of `banner.svg`.
+-   **Compatibility**: Ensures Open Graph images render correctly on Twitter, LinkedIn, and Facebook (which do not support SVG).
+
 ## [v2.0.15] - 2026-01-27
 ### Enhancements
 -   **Script**: Extended **Deployment Summary** in `update_app.sh`.
