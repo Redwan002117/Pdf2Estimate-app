@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.26] - 2026-01-27
+### Visuals
+-   **Banner**: Remastered `banner.svg` with **Advanced Animations**.
+    -   **Radar**: Scan sweep effect using rotating gradients.
+    -   **Grid**: Moving perspective grid lines ("Tron" style).
+    -   **Particles**: Data stream dots converging on the core.
+    -   **HUD**: "SYSTEM: ONLINE" blinking status text.
+-   **Metadata**: Fixed missing OGP tags (Retry).
+    -   Added `og:site_name`, `og:locale`, `og:image:alt`.
+
 ## [v2.0.25] - 2026-01-27
 ### Documentation
 -   **Social Metadata**: Added missing Open Graph tags to clear debugger warnings.
@@ -100,7 +110,7 @@ All notable changes to this project will be documented in this file.
 ## [v2.0.11] - 2026-01-27
 ### Fixed
 -   **Rebrand**: Updated `update_app.sh` header text to "Pdf2Estimate Pro" (previously "Repair Base App").
--   **Documentation**: Updated troubleshooting guides to point to the renamed `Pdf2Estimate-app` repository.
+-   **Docs**: Updated troubleshooting links to `Pdf2Estimate-app` repo.
 
 ## [v2.0.10] - 2026-01-27
 ### Fixed
