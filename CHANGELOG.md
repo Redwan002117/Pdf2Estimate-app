@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.5] - 2026-01-27
+### Security
+-   **Hardening**: Verified production build usage in `docker-compose.yml` (removed unused volume mounts).
+-   **Note**: The deployment uses Nginx (Static Build), mitigating `esbuild`/`npm run dev` security risks.
+
+## [v2.0.4] - 2026-01-27
+### Documentation
+-   **Changelog**: Added `CHANGELOG.md` and linked it in releases.
+### Features
+-   **UI**: Added a **Clear All** button to the header for quick reset.
+
 ## [v2.0.3] - 2026-01-27
 ### Documentation
 -   **License**: Added MIT License file.
@@ -9,7 +20,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v2.0.2] - 2026-01-27
 ### Fixed
--   **CI/CD**: Corrected `permissions` block indentation in `docker-publish.yml` to fix build failures.
+-   **CI/CD**: Corrected workflow permissions.
 
 ## [v2.0.1] - 2026-01-27
 ### Documentation
