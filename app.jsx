@@ -802,7 +802,7 @@ export default function App() {
             <Calculator className="text-white w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl font-black text-[#1a4b8c] tracking-tight">TrueView PDF</h1>
+            <h1 className="text-xl font-black text-[#1a4b8c] tracking-tight">Pdf2Estimate</h1>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">RepairBase Pro Converter</p>
           </div>
         </div>
