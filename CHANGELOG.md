@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.18] - 2026-01-27
+### Features
+-   **Script**: `update_app.sh` now explicitly displays the **"Latest Version Available"** (e.g., `[v2.0.18]`) during the update check.
+-   **Enhancement**: Parses the remote Changelog to show the specific version number alongside "What's New".
+
 ## [v2.0.17] - 2026-01-27
 ### Features
 -   **Script**: Added **Interactive Update Mode** to `update_app.sh`.

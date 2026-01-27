@@ -117,7 +117,13 @@ LOCAL_IMAGE_ID=$(docker images -q ghcr.io/redwan002117/pdf2estimate-app:main)
 # Fetch latest changelog preview
 echo -e "${CYAN}--- WHAT'S NEW ---${NC}"
 if command -v curl &> /dev/null; then
-    curl -s "$CHANGELOG_URL" | grep -A 10 "## \[" | head -n 10
+    CONTENT=$(curl -s "$CHANGELOG_URL")
+    
+    # Extract Latest Version
+    LATEST_VERSION=$(echo "$CONTENT" | grep -o "\[v[0-9]*\.[0-9]*\.[0-9]*\]" | head -n 1)
+    
+    echo -e "${GREEN}Latest Version Available: $LATEST_VERSION${NC}"
+    echo "$CONTENT" | grep -A 10 "## \[" | head -n 10
 else
     echo "Curl not found, skipping changelog preview."
 fi
