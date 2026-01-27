@@ -44,7 +44,8 @@ echo ""
 
 # 0. Self-Update Check
 info "Checking for update script upgrades..."
-REMOTE_URL="https://raw.githubusercontent.com/Redwan002117/Pdf2Estimate-app/main/update_app.sh"
+# Add timestamp to bypass cache
+REMOTE_URL="https://raw.githubusercontent.com/Redwan002117/Pdf2Estimate-app/main/update_app.sh?t=$(date +%s)"
 TEMP_SCRIPT="/tmp/update_app_new.sh"
 
 if command -v wget &> /dev/null; then
@@ -52,11 +53,14 @@ if command -v wget &> /dev/null; then
     if [ -s "$TEMP_SCRIPT" ]; then
         # Compare checksums if possible, or just size/diff
         if ! cmp -s "update_app.sh" "$TEMP_SCRIPT"; then
-            warn "New version of update_app.sh detected. Update initiated."
-            mv "$TEMP_SCRIPT" "update_app.sh"
-            chmod +x "update_app.sh"
-            success "Script updated successfully. Reloading..."
-            exec ./update_app.sh
+            # Verify it's a valid script header before replacing
+            if head -n 1 "$TEMP_SCRIPT" | grep -q "#!/bin/bash"; then
+                warn "New version of update_app.sh detected. Update initiated."
+                mv "$TEMP_SCRIPT" "update_app.sh"
+                chmod +x "update_app.sh"
+                success "Script updated successfully. Reloading..."
+                exec ./update_app.sh
+            fi
         else
             info "Update script is already latest."
             rm -f "$TEMP_SCRIPT"
@@ -111,7 +115,7 @@ echo ""
 # 2. Check for Updates
 info "Checking for application updates..."
 
-CHANGELOG_URL="https://raw.githubusercontent.com/Redwan002117/Pdf2Estimate-app/main/CHANGELOG.md"
+CHANGELOG_URL="https://raw.githubusercontent.com/Redwan002117/Pdf2Estimate-app/main/CHANGELOG.md?t=$(date +%s)"
 VERSION_FILE="version.txt"
 CURRENT_VERSION="Unknown"
 
@@ -119,6 +123,8 @@ CURRENT_VERSION="Unknown"
 
 # Fetch latest changelog preview
 echo -e "${CYAN}--- WHAT'S NEW ---${NC}"
+FORCE_UPDATE="n"
+
 if command -v curl &> /dev/null; then
     CONTENT=$(curl -s "$CHANGELOG_URL")
     
@@ -131,24 +137,31 @@ if command -v curl &> /dev/null; then
     
     if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]]; then
         echo -e "${GREEN}✅ You are already up to date!${NC}"
+        echo ""
+        read -p "Do you want to FORCE a re-install/restart? (y/N) " -n 1 -r
+        echo ""
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Exiting."
+            exit 0
+        fi
+        FORCE_UPDATE="y"
     else
         echo -e "${YELLOW}⚠️  Update Available!${NC}"
+        echo "$CONTENT" | grep -A 10 "## \[" | head -n 10
+        echo -e "${CYAN}------------------${NC}"
+        
+        # Interactive Prompt
+        echo ""
+        echo -e "An update check compares your local image with the remote registry."
+        read -p "Do you want to check and pull updates now? (Y/n) " -n 1 -r
+        echo ""
+        if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ -n $REPLY ]]; then
+            info "Update cancelled by user."
+            exit 0
+        fi
     fi
-
-    echo "$CONTENT" | grep -A 10 "## \[" | head -n 10
 else
-    echo "Curl not found, skipping changelog preview."
-fi
-echo -e "${CYAN}------------------${NC}"
-
-# Interactive Prompt
-echo ""
-echo -e "An update check compares your local image with the remote registry."
-read -p "Do you want to check and pull updates now? (Y/n) " -n 1 -r
-echo ""
-if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ -n $REPLY ]]; then
-    info "Update cancelled by user."
-    exit 0
+    echo "Curl not found, skipping preview."
 fi
 
 # 3. Pull Updates

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.22] - 2026-01-27
+### Improvements
+-   **Script**: Added **Cache Busting** (`?t=timestamp`) to `update_app.sh`.
+    -   **Fix**: Prevents "stale version" reports caused by GitHub CDN caching.
+-   **Logic**: Added **Smart Exit** capability.
+    -   If "Already up to date", the script now asks: `Do you want to FORCE a re-install/restart? (y/N)`.
+    -   If "No", it exits immediately without pulling.
+
 ## [v2.0.21] - 2026-01-27
 ### Fixes
 -   **Script**: Updated `update_app.sh` to use `docker compose up -d --force-recreate`.
