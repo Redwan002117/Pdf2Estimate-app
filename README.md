@@ -33,6 +33,21 @@ This is the easiest way to run the app. You do NOT need to install Node.js.
 6.  Wait for the process to finish. It will download dependencies and start the server.
 7.  Once you see "Ready in ... ms", open your browser to: **[http://localhost:6969](http://localhost:6969)**.
 
+### Option 2: CasaOS (Home Server)
+
+**Easy Import:**
+1.  Open your **CasaOS Dashboard**.
+2.  Click the `+` button to install a new app.
+3.  Select **"Custom Install"** (or "Docker Compose").
+4.  Click **"Import"** (top right corner usually).
+5.  Paste the contents of the [`docker-compose.yml`](https://github.com/Redwan002117/repair-base-app/blob/main/docker-compose.yml) file from this repository.
+    *   *Alternatively, download the `docker-compose.yml` file and upload it.*
+6.  CasaOS will automatically parse the settings (Icon, Name, Port 6969).
+7.  Click **"Install"**.
+8.  Once done, click the **RepairBase Pro** icon on your dashboard to open it.
+
+---
+
 **Updating the App (Docker):**
 To get the latest version from GitHub:
 1.  **Windows**: Double-click the `update_app.bat` file in the project folder.
