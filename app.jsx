@@ -174,6 +174,13 @@ const styles = `
       break-inside: avoid;
       page-break-inside: avoid;
     }
+
+    /* CRITICAL FIX: Disable transforms/animations so 'fixed' footer works relative to page, not container */
+    .animate-fade-in, .repairbase-paper {
+      animation: none !important;
+      transform: none !important;
+      transition: none !important;
+    }
   }
 `;
 
@@ -420,10 +427,7 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
         </div>
       </div>
 
-      {/* Spacer to prevent content from hitting the fixed footer */}
-      <div className="h-20 w-full"></div>
-
-      <div className="print-footer fixed bottom-0 left-0 right-0 bg-white p-4 text-[10px] text-slate-400 font-bold italic z-[10000]">
+      <div className="mt-24 pt-8 border-t border-slate-100 text-center text-[10px] text-slate-400 font-bold italic no-print-break">
         © All rights reserved 2010-2026. BlueBook International. www.RepairBase.net
       </div>
     </div>
@@ -686,7 +690,7 @@ export default function App() {
         const searchResult = await callGemini({
           contents: [{
             role: "user",
-            parts: [{ text: `Act as a real estate data analyst. Perform a targeted search for the specific property located at: "${address}". \n\nLocate the specific listing on Zillow, Redfin, or Realtor.com to ensure accuracy. Extract the following technical specifications:\n- Structure Type (e.g., Single Family, Condo)\n- Stories\n- Living Area (Square Feet)\n- Bedrooms\n- Bathrooms\n- Year Built\n- Quality Class (estimate based on description if explicitly stated, otherwise leave blank)\n\nStrictly output valid JSON only with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
+            parts: [{ text: `Act as a real estate data analyst. Perform a targeted search for the specific property located at: "${address}". \n\nLocate the specific listing on Zillow, Redfin, or Realtor.com. \n\nEXTRACT STRICT FACTS ONLY. Do NOT guess. \n- Structure Type\n- Stories\n- Living Area (Square Feet)\n- Bedrooms (If listed as '--' or missing, return empty string)\n- Bathrooms (If listed as '--' or missing, return empty string)\n- Year Built\n- Quality Class\n\nResult must be valid JSON with keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown or dashes, use an empty string reference.` }]
           }],
           tools: [{ "google_search": {} }],
           generationConfig: { responseMimeType: "application/json" }
