@@ -17,14 +17,14 @@ echo "=========================================="
 echo ""
 
 echo "[Step 1/3] Checking for updates from GitHub..."
-if ! docker-compose pull; then
+if ! docker compose pull; then
     error_exit "Could not download the update." " - No internet connection.\n - Docker is not running.\n - Image name in docker-compose.yml is incorrect."
 fi
 echo "✅ [SUCCESS] Updates downloaded successfully."
 echo ""
 
 echo "[Step 2/3] Restarting the application container..."
-if ! docker-compose up -d --remove-orphans; then
+if ! docker compose up -d --remove-orphans; then
     error_exit "Could not restart the application." " - Port 6969 might be in use.\n - Docker internal error."
 fi
 echo "✅ [SUCCESS] Application restarted."

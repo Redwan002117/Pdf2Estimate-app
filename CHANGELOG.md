@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.10] - 2026-01-27
+### Fixed
+-   **Scripts**: Updated `update_app.sh` to use modern `docker compose` syntax instead of legacy `docker-compose`.
+-   **Resolution**: Fixes "command not found" error on servers without legacy Compose V1.
+
 ## [v2.0.9] - 2026-01-27
 ### Visuals
 -   **Rebrand**: Introduced "Futuristic Cyber-Shield" visual identity.
