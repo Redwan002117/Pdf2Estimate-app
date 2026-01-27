@@ -27,8 +27,9 @@ This is the easiest way to run the app. You do **NOT** need to install Node.js.
 4.  💻 **Open a terminal** (Command Prompt/PowerShell) in this folder.
 5.  ⌨️ **Type** the following command and hit Enter:
     ```bash
-    docker-compose up --build
+    docker compose up --build
     ```
+    *(Note: If that doesn't work, try `docker-compose up --build`)*
 6.  ⏳ **Wait** for the process to finish. It will download dependencies and start the server.
 7.  🌐 **Success!** Once you see "Ready in ... ms", open your browser to: **[http://localhost:6969](http://localhost:6969)**.
 
@@ -60,8 +61,9 @@ If the UI import fails, you can install it via the terminal.
     ```
 4.  **Run the app**:
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
+    *(Note: If you get "command not found", try `docker-compose up -d`)*
 5.  It will appear in your CasaOS dashboard automatically (managed by Docker).
 
 ---
@@ -75,7 +77,7 @@ If the UI import fails, you can install it via the terminal.
 **Option 2: Manual Update**
 ```bash
 git pull
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
 ---
