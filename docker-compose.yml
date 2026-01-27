@@ -9,7 +9,7 @@ services:
     environment:
       - VITE_GEMINI_API_KEY=change_me
     command: >
-      sh -c "echo 'window.env = { VITE_GEMINI_API_KEY: \"'$VITE_GEMINI_API_KEY'\" };' > dist/config.js && npm run preview"
+      sh -c "echo 'window.env = { VITE_GEMINI_API_KEY: \"'$VITE_GEMINI_API_KEY'\" };' > dist/config.js && npm run preview -- --host --port 80"
     restart: unless-stopped
 
 # CasaOS Metadata
