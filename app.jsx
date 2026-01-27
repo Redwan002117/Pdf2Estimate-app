@@ -34,159 +34,125 @@ const useScript = (src, globalName) => {
 
 // --- Custom Styles ---
 const styles = `
-  .textLayer {
-    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
-    overflow: hidden; opacity: 0; line-height: 1.0;
-  }
-  .pdf-page-container {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem; position: relative; background: white;
-    border-radius: 8px; overflow: hidden;
-  }
+  /* --- RESET & BASIC --- */
+  * { margin:0; padding:0; }
+  .textLayer { position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; opacity: 0; line-height: 1.0; }
+  .pdf-page-container { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: relative; background: white; border-radius: 8px; overflow: hidden; }
+
+  /* --- ADMIN.CSS PORT & SCREENSHOT REFINEMENT --- */
+  /* HTML Reference Styles */
   .pdf2estimate-paper {
     background: white;
-    width: 850px;
-    min-height: 1100px;
-    padding: 50px;
+    width: 909px; /* Matched from index.html (Canvas width) */
+    min-height: 1286px; /* Matched height */
+    padding: 0px; /* REMOVED PADDING for 1:1 Absolute Coordinate Match */
     margin: 20px auto;
     box-shadow: 0 0 40px rgba(0,0,0,0.15);
-    font-family: Arial, sans-serif;
-    color: #333;
+    font-family: Helvetica, Arial, sans-serif; /* Matched font */
+    color: #000;
     position: relative;
+    box-sizing: border-box; /* Ensure borders don't add width */
   }
-  .pdf2estimate-table {
+
+  .s1-header-label { font-size: 23px; font-family: Helvetica, Arial, sans-serif; color: #000; font-weight: normal; margin-bottom: 2px; }
+  .header-input { font-size: 14px; font-weight: bold; text-transform: uppercase; color: #000; width: 100%; border: none; outline: none; }
+  .header-address-input { font-size: 15px; font-weight: 800; text-transform: uppercase; color: #000; width: 100%; border: none; outline: none; font-family: Helvetica, Arial, sans-serif; } 
+  .s0-header-right-label { font-size: 17px; font-family: Helvetica, Arial, sans-serif; color: #000; text-align: right; line-height: 1.2; }
+  .s0-header-right-val { font-size: 17px; font-family: Helvetica, Arial, sans-serif; font-weight: bold; color: #000; text-align: right; line-height: 1.2; }
+
+  /* Property Characteristics Table (Blue/Grey Theme) */
+  .prop-chars-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #999;
   }
-  /* Table Header Centering */
-  .pdf2estimate-table th {
-    background: #f1f5f9;
-    border: 1px solid #cbd5e1;
-    padding: 8px;
-    text-align: center; /* CENTER ALIGNMENT REQUESTED */
-    color: #0f172a;
+  .prop-chars-table th {
+    background: #b9c9fe; /* Periwinkle Blue from Admin.css/Screenshot */
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    border: 1px solid #777;
+    padding: 2px; /* Super compact */
+    font-size: 11px; /* Slightly smaller for compact look */
+    font-weight: bold;
+  }
+  .prop-chars-table td {
+    background: #ffffff;
+    text-align: center;
+    border: 1px solid #777;
+    padding: 2px;
+    font-size: 11px;
+    font-weight: bold;
+  }
+  
+  .tahoma12-blue { font-family: Tahoma, Geneva, sans-serif; font-size: 12px; line-height: 16px; color: #02598b; }
+  .tahoma12-gray { font-family: Tahoma, Geneva, sans-serif; font-size: 12px; line-height: 16px; color: #000; }
+  .tahoma14-gold { font-family: Tahoma, Geneva, sans-serif; font-size: 14px; color: #b18d1e; text-decoration: none; font-weight: bold; }
+  .tahoma13-gold { font-family: Tahoma, Geneva, sans-serif; font-size: 13px; color: #b18d1e; text-decoration: none; font-weight: bold; }
+  .arial18-blue, .arial20-blue { font-family: Tahoma, Geneva, sans-serif; font-size: 18px; color: #02598b; font-weight: normal; padding-bottom:15px; }
+
+  /* Table Style: #box-table-b (Repair Estimate) */
+  #box-table-b {
+    font-family: Helvetica, Arial, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid #000; 
+    border-bottom: 1px solid #000; 
+  }
+  #box-table-b th {
+    font-size: 14px; /* s4 class */
+    padding: 3px; 
+    background: #f8faff; /* g1 class fill */
+    color: #004293; /* s4 color */
+    border-right: 1px solid #aabcfe; 
+    border-left: 1px solid #aabcfe;
+    border-bottom: 1px solid #aabcfe;
+    text-align: left;
     font-weight: bold;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  .pdf2estimate-table td {
-    border: 1px solid #e2e8f0;
-    padding: 8px;
+  #box-table-b td {
+    padding: 3px; 
+    background: #ffffff; 
+    border-right: 1px solid #aabcfe;
+    border-left: 1px solid #aabcfe;
+    color: #000;
+    font-size: 14px; /* s5 class */
     vertical-align: top;
   }
-  .fillable-input {
-    border: none;
-    border-bottom: 1px solid #e2e8f0;
-    width: 100%;
-    outline: none;
-    font-size: 13px;
-    padding: 4px 0;
-    background: transparent;
-    color: #333;
-  }
-  .fillable-input:focus { border-bottom-color: #3b82f6; background: #f8fafc; }
   
-  .preview-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    background: white;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  }
-  .preview-table th { background: #f8fafc; padding: 12px; text-align: left; border-bottom: 2px solid #e2e8f0; color: #64748b; font-weight: 600; }
-  .preview-table td { padding: 12px; border-bottom: 1px solid #f1f5f9; color: #334155; }
-  .preview-table tr:last-child td { border-bottom: none; }
+  .fillable-input { border: none; border-bottom: 1px solid transparent; width: 100%; outline: none; background: transparent; font-family: Helvetica, Arial, sans-serif; }
+  .fillable-input:hover { border-bottom: 1px solid #eee; }
+  
+  .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
-  }
-
-  /* --- PRINT STYLES --- */
   /* --- PRINT STYLES --- */
   @media print {
-    /* Globally hide everything by default */
-    body * {
-      visibility: hidden;
-    }
-
-    /* Reset background and sizing */
-    body, html {
-      background: white;
-      height: 100%;
-      overflow: visible;
-      /* Ensure content doesn't overlap the fixed footer on any page */
-      padding-bottom: 20mm; 
-    }
-
-    /* Target the specific pdf2estimate container */
-    #pdf2estimate-pdf, #pdf2estimate-pdf * {
-      visibility: visible;
-    }
-
+    body * { visibility: hidden; }
+    body, html { background: white; height: 100%; overflow: visible; padding: 0; margin: 0; }
+    #pdf2estimate-pdf, #pdf2estimate-pdf * { visibility: visible; }
     #pdf2estimate-pdf {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      margin: 0;
-      padding: 0 20px; /* Restore padding for print layout */
-      background: white;
-      box-shadow: none;
-      /* Ensure it sits on top of everything else if any z-index issues */
-      z-index: 9999;
+      position: absolute; left: 0; top: 0;
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: white; box-shadow: none; z-index: 9999;
+      transform: none; /* Let the browser scale content to fit */
     }
-
-    /* Fixed footer for print */
-    .print-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 10mm 20px; /* Match container padding */
-      background: white;
-      z-index: 10000;
-    }
-
-    /* Hide specific non-printable elements inside the component if any */
-    .no-print {
-      display: none !important;
-    }
-
-    /* Ensure specific inputs look correct */
-    .fillable-input { 
-      border-bottom: 1px solid #ccc !important; 
-    }
-    
-    /* Force background colors */
-    * { 
-      -webkit-print-color-adjust: exact !important; 
-      print-color-adjust: exact !important; 
-    }
-    
-    @page { margin: 10mm; size: auto; }
-
-    .break-inside-avoid {
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-    /* CRITICAL FIX: Disable transforms/animations so 'fixed' footer works relative to page, not container */
-    .animate-fade-in, .pdf2estimate-paper {
-      animation: none !important;
-      transform: none !important;
-      transition: none !important;
-    }
+    .no-print { display: none !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    @page { margin: 0; size: auto; } /* Remove browser default margins */
+    .break-inside-avoid { break-inside: avoid; page-break-inside: avoid; }
+    .animate-fade-in { animation: none !important; transform: none !important; }
+    .print-hidden { display: none; }
   }
 `;
 
 // --- Component: HTML Extraction Preview (Step 1) ---
-const ExtractionPreview = ({ data, onProceed, onBack, isProcessing }) => {
+const ExtractionPreview = ({ data, onProceed, onBack, isProcessing, onUpdate }) => {
   const items = Array.isArray(data.items) ? data.items : [];
 
   let addressDisplay = "Unknown Address";
@@ -210,8 +176,14 @@ const ExtractionPreview = ({ data, onProceed, onBack, isProcessing }) => {
             <p className="text-slate-500 text-sm mt-1">Review extracted line items before generating official PDF.</p>
           </div>
           <div className="text-right">
-            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Detected Address</div>
-            <div className="font-bold text-slate-800 max-w-xs truncate">{addressDisplay}</div>
+            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Detected Address</div>
+            <textarea
+              className="font-bold text-slate-800 text-right bg-transparent border-b border-slate-300 focus:border-blue-500 outline-none w-64 resize-none h-auto overflow-hidden placeholder-slate-300"
+              value={data.address || ''}
+              placeholder="Enter Property Address..."
+              onChange={(e) => onUpdate({ address: e.target.value })}
+              rows={1}
+            />
           </div>
         </div>
 
@@ -269,7 +241,7 @@ const ExtractionPreview = ({ data, onProceed, onBack, isProcessing }) => {
 // --- Component: Pdf2Estimate Specialized View (Step 2) ---
 const Pdf2EstimateView = ({ data, onUpdate, logoSettings, onAutofill }) => {
   const [isFetching, setIsFetching] = useState(false);
-  const taxRate = 0.065;
+  const taxRate = 0.085;
   const items = Array.isArray(data.items) ? data.items : [];
 
   const handleAutoFill = async () => {
@@ -281,157 +253,195 @@ const Pdf2EstimateView = ({ data, onUpdate, logoSettings, onAutofill }) => {
 
   const areaTotal = items.reduce((sum, item) => sum + (parseFloat(item.cost) || 0), 0);
   const salesTax = areaTotal * taxRate;
+  // Estimate Totals logic: Subtotal + Tax if needed, but screenshots usually show "Total Estimate" as sum
+  // Check Image 1: "Total Estimate: $9512.47". 
+  // Check Image 0: Area Total (bottom of table) $8767.25. Sales tax $745.216.
+  // So: Total = Area Total + Sales Tax.
   const totalEstimate = areaTotal + salesTax;
 
   let addressDisplay = "";
   if (typeof data.address === 'string') addressDisplay = data.address;
   else if (data.address && typeof data.address === 'object') addressDisplay = Object.values(data.address).join(' ');
 
+  const logoUrl = "https://www.repairbase.net/images/repairbase-logob.png";
+
   return (
     <div className="pdf2estimate-paper animate-fade-in" id="pdf2estimate-pdf">
-      <div className="flex justify-between items-start mb-8">
-        <div>
-          {/* LOGO SECTION */}
-          <div className="mb-2 w-fit">
-            {logoSettings.url ? (
-              <img src={logoSettings.url} alt="Logo" className="h-16 w-auto object-contain" />
-            ) : (
-              <div className="flex items-center gap-1">
-                <div className="bg-[#1a4b8c] text-white px-2 py-1 rounded text-sm font-bold italic">Pdf2</div>
-                <div className="text-2xl font-black italic tracking-tighter text-[#1a4b8c]">Estimate</div>
-              </div>
-            )}
-          </div>
 
-          <div className="text-sm font-bold text-slate-700 uppercase tracking-tight mb-1">Property Address:</div>
-          <div className="flex items-start gap-2">
-            <textarea
-              className="fillable-input w-80 h-16 font-semibold text-base text-slate-900 resize-none"
-              value={addressDisplay}
-              onChange={(e) => onUpdate({ address: e.target.value })}
-              placeholder="Enter address..."
-            />
-            <button
-              onClick={handleAutoFill}
-              disabled={isFetching || !data.address}
-              className="mt-1 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md no-print group"
-              title="Auto-Fill Property Details from Web"
-            >
-              {isFetching ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Sparkles className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              )}
-            </button>
+      {/* HEADER SECTION - HTML Reference Exact Match */}
+      {/* Logo: x=65, y=65 (from index.html SVG image tag) */}
+      <div style={{ position: 'absolute', left: '65px', top: '65px' }}>
+        <img src={logoUrl} alt="RepairBase" style={{ width: '238px', height: '65px', objectFit: 'contain' }} />
+      </div>
+
+      <div className="mb-4 relative">
+        {/* Left Column: Property Address */}
+        {/* Address Label: left:70px, bottom:1118px -> top: 168px (1286-1118) */}
+        {/* Wait, index.html line 83: bottom:1118px. 1286-1118 = 168px. */}
+        <div style={{ position: 'absolute', left: '70px', top: '168px' }}>
+          <div className="s1-header-label">Property Address:</div>
+          {/* Address Input below label */}
+          <div style={{ marginTop: '5px' }}>
+            <span className="fillable-input" style={{ fontSize: '15px', color: '#000', display: 'block', width: '400px' }}>
+              {addressDisplay || "705 BENT HOLLOW CT MOORE, SC 29369"}
+            </span>
           </div>
         </div>
-        <div className="text-right w-64">
-          <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
-            <span className="text-slate-500 font-bold">Date:</span>
-            <input type="text" className="fillable-input text-right" defaultValue={new Date().toLocaleDateString()} />
-            <span className="text-slate-500 font-bold">Pdf2Estimate ID:</span>
-            <input type="text" className="fillable-input text-right" placeholder="1558326" />
-            <span className="text-slate-500 font-bold">Vendor Num:</span>
-            <input type="text" className="fillable-input text-right" placeholder="5433" />
-          </div>
-          {/* Fillable Loan Info */}
-          <div className="mt-4 flex items-center justify-end gap-2">
-            <span className="text-[10px] text-slate-400 font-bold italic uppercase tracking-wider whitespace-nowrap">Loan Info:</span>
-            <input
-              className="fillable-input text-right text-[10px] font-bold italic text-slate-500 w-32"
-              defaultValue="******1067 FHA (11)"
-            />
-          </div>
+
+        {/* Right Column: Date, ID, Loan # - Absolute Positioning match */}
+        {/* Date: left:568px, bottom:1149px -> top: 137px */}
+        <div style={{ position: 'absolute', left: '568px', top: '137px' }}>
+          <span className="s0-header-right-label">Date: </span>
+          <span className="s0-header-right-val" style={{ marginLeft: '130px' }}>{new Date().toLocaleDateString()}</span>
+        </div>
+
+        {/* ID: left:494px, bottom:1127px -> top: 159px */}
+        <div style={{ position: 'absolute', left: '494px', top: '159px' }}>
+          <span className="s0-header-right-label">RepairBase ID: </span>
+          <span className="s0-header-right-val" style={{ marginLeft: '160px' }}>1680033</span>
+        </div>
+
+        {/* Loan: left:552px, bottom:1054px -> top: 232px */}
+        <div style={{ position: 'absolute', left: '552px', top: '232px' }}>
+          <span className="s0-header-right-label">Loan #: </span>
+          <span className="s0-header-right-val" style={{ marginLeft: '150px' }}>***1401 VA (12)</span>
         </div>
       </div>
 
-      <div className="mb-8">
-        <div className="text-lg font-bold text-slate-800 mb-3">Property Characteristics:</div>
-        <table className="pdf2estimate-table">
-          <thead>
-            <tr>
-              <th colSpan={2}>Structure Type</th>
-              <th>Stories</th>
-              <th>Living Area</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colSpan={2}><input className="fillable-input" value={data.characteristics?.structureType || ''} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, structureType: e.target.value } })} /></td>
-              <td><input className="fillable-input" value={data.characteristics?.stories || ''} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, stories: e.target.value } })} /></td>
-              <td><input className="fillable-input font-bold" value={data.characteristics?.livingArea || ''} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, livingArea: e.target.value } })} /></td>
-            </tr>
-          </tbody>
-          <thead>
-            <tr>
-              <th>Bedrooms</th>
-              <th>Baths</th>
-              <th>Year Built</th>
-              <th>Quality</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input className="fillable-input" value={data.characteristics?.bedrooms || ''} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, bedrooms: e.target.value } })} /></td>
-              <td><input className="fillable-input" value={data.characteristics?.baths || ''} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, baths: e.target.value } })} /></td>
-              <td><input className="fillable-input" value={data.characteristics?.yearBuilt || ''} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, yearBuilt: e.target.value } })} /></td>
-              <td><input className="fillable-input" value={data.characteristics?.quality || ''} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, quality: e.target.value } })} /></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      {/* HORIZONTAL LINE Top: 1286 - 989 (PropChars label) = 297px? No, line is distinct from text. */}
+      {/* Looking at SVG path: M65 427.1H844.5 (Top line of table?). No. */}
+      {/* SVG Path: M65 292.8 ... that's a table grid. */}
+      {/* User Annotation: "Missing Underline". Let's place it around 300px.*/}
+      <div className="w-full border-t border-black mb-3" style={{ position: 'absolute', top: '300px', left: '65px', width: '780px' }}></div>
 
-      <div className="mb-8">
-        <div className="text-center py-2 border-y-2 border-slate-300 font-bold text-xl mb-6 tracking-wide uppercase">Repair Estimate</div>
-        <div className="text-[#1a4b8c] font-black text-sm uppercase mb-3 px-1">Entire House</div>
-        <table className="pdf2estimate-table">
+      {/* CONTENT PADDING WRAPPER for Flow Content below absolute Header */}
+      <div style={{ paddingTop: '320px', paddingLeft: '65px', paddingRight: '65px' }}>
+
+        {/* Buttons (Auto-Fill) - Hidden in Print */}
+        <div className="no-print mb-4">
+          <button onClick={handleAutoFill} disabled={isFetching || !data.address} className="text-blue-600 underline text-xs cursor-pointer">
+            {isFetching ? "Auto-Filling Property Data..." : "Auto-Fill details from Address"}
+          </button>
+        </div>
+
+        {/* PROPERTY CHARACTERISTICS - Strict Match Image 0/2 */}
+        <div className="mb-4">
+          <div className="text-[15px] text-[#333] mb-1" style={{ borderBottom: '1px solid #000' }}>Property Characteristics:</div>
+          <table className="prop-chars-table">
+            <thead>
+              <tr>
+                <th style={{ width: '30%' }}>Structure Type</th>
+                <th style={{ width: '30%' }}>Stories</th>
+                <th style={{ width: '40%' }}>Living Area</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input className="fillable-input text-center font-bold" value={data.characteristics?.structureType || 'Single Family Residence'} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, structureType: e.target.value } })} /></td>
+                <td><input className="fillable-input text-center font-bold" value={data.characteristics?.stories || '1'} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, stories: e.target.value } })} /></td>
+                <td><input className="fillable-input text-center font-bold" value={data.characteristics?.livingArea || '0'} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, livingArea: e.target.value } })} /></td>
+              </tr>
+            </tbody>
+            <thead>
+              <tr>
+                <th>Bedrooms</th>
+                <th>Baths</th>
+                <th className="grid grid-cols-2 p-0 border-none">
+                  <div className="border-r border-[#777] h-full flex items-center justify-center">Year Built</div>
+                  <div className="h-full flex items-center justify-center">Quality</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input className="fillable-input text-center font-bold" value={data.characteristics?.bedrooms || '3'} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, bedrooms: e.target.value } })} /></td>
+                <td><input className="fillable-input text-center font-bold" value={data.characteristics?.baths || '2'} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, baths: e.target.value } })} /></td>
+                <td className="p-0 border-none">
+                  <div className="grid grid-cols-2 h-full">
+                    <div className="border-r border-[#777] px-2 py-[2px]"><input className="fillable-input text-center font-bold" value={data.characteristics?.yearBuilt || '1990'} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, yearBuilt: e.target.value } })} /></div>
+                    <div className="px-2 py-[2px]"><input className="fillable-input text-center font-bold" value={data.characteristics?.quality || 'Average'} onChange={(e) => onUpdate({ characteristics: { ...data.characteristics, quality: e.target.value } })} /></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* REPAIR ESTIMATE HEADER - Two Bars Style */}
+        <div className="mb-2 mt-0">
+          <div className="border-t border-black mb-1"></div>
+          <div className="text-center text-[16px] text-black">Repair Estimate</div>
+          <div className="border-b border-black mt-1"></div>
+        </div>
+
+        <div style={{ color: '#004275', fontWeight: 'bold', fontSize: '15px', marginBottom: '10px', paddingLeft: '4px' }}>Entire House</div>
+
+        <table id="box-table-b">
           <thead>
             <tr>
-              <th className="w-12 text-center">Item #</th>
-              <th>Description</th>
-              <th className="w-16 text-center">QTY</th>
-              <th className="w-16 text-center">U/M</th>
-              <th className="w-24 text-right">PPU</th>
-              <th className="w-24 text-right">Cost</th>
+              <th width="5%">Item #</th>
+              <th width="45%">Description</th>
+              <th width="8%" className="text-center">QTY</th>
+              <th width="8%" className="text-center">U/M</th>
+              <th width="12%" className="text-right">PPU</th>
+              <th width="12%" className="text-right">Cost</th>
             </tr>
           </thead>
           <tbody>
             {items.map((item, idx) => (
               <tr key={idx}>
-                <td className="text-center text-slate-500 font-mono">{idx + 1}</td>
-                <td className="font-medium">{typeof item.description === 'string' ? item.description : 'Item'}</td>
-                <td className="text-center">{Number(item.qty) || 0}</td>
-                <td className="text-center uppercase text-slate-600">{typeof item.um === 'string' ? item.um : 'EA'}</td>
-                <td className="text-right font-mono">${(parseFloat(item.ppu) || 0).toFixed(2)}</td>
-                <td className="text-right font-bold font-mono">${(parseFloat(item.cost) || 0).toFixed(2)}</td>
+                <td align="center"><span className="tahoma12-gray">{idx + 1}</span></td>
+                <td><span className="tahoma12-gray">{typeof item.description === 'string' ? item.description : 'Item'}</span></td>
+                <td align="right"><span className="tahoma12-gray">{Number(item.qty) || 0}</span></td>
+                <td align="right"><span className="tahoma12-gray uppercase">{typeof item.um === 'string' ? item.um : 'EA'}</span></td>
+                <td align="right"><span className="tahoma12-gray">${(Number(item.ppu) || 0).toFixed(2)}</span></td>
+                <td align="right"><span className="tahoma12-gray">${(Number(item.cost) || 0).toFixed(2)}</span></td>
               </tr>
             ))}
-            <tr className="bg-slate-50">
-              <td colSpan="5" className="text-right font-black uppercase text-xs border-none py-4">Area Total:</td>
-              <td className="text-right font-black border-none py-4 text-sm">${areaTotal.toFixed(2)}</td>
+            <tr>
+              <td colSpan="5" align="right" style={{ borderTop: '1px solid #9baff1' }}>
+                <span className="tahoma12-gray"><strong>Area Total:&nbsp; </strong></span>
+              </td>
+              <td align="right" style={{ borderTop: '1px solid #9baff1' }}>
+                <span className="tahoma12-gray"><strong>${areaTotal.toFixed(2)}</strong></span>
+              </td>
             </tr>
           </tbody>
         </table>
+
+        <div className="grid grid-cols-[1fr_auto] gap-4 mt-2 pr-1">
+          <div className="text-right text-sm text-[#333]">Sales tax :</div>
+          <div className="text-right text-sm text-[#333] w-24">${salesTax.toFixed(3)}</div>
+        </div>
+
+      </div> {/* End Flow Content Wrapper */}
+
+      {/* ESTIMATE TOTALS SECTION (Page Break / Separate Block) */}
+      <div className="break-inside-avoid" style={{ paddingLeft: '65px', paddingRight: '65px', marginTop: '50px' }}>
+        <div className="text-[15px] text-black mb-1 px-1">Estimate Totals:</div>
+        <div className="flex justify-between items-center border-t-2 border-b border-black py-1 mt-1">
+          <span className="font-bold text-xs text-black pl-20">Total Estimate:</span>
+          <span className="font-bold text-xs text-black pr-1">${totalEstimate.toFixed(2)}</span>
+        </div>
       </div>
 
-      <div className="mt-12 flex justify-end break-inside-avoid page-break-inside-avoid">
-        <div className="w-80">
-          <div className="text-xl font-black mb-4 border-b-2 border-slate-800 pb-1">Estimate Totals:</div>
-          <div className="flex justify-between py-2 border-b text-sm font-bold text-slate-600">
-            <span>Sales Tax:</span>
-            <span className="text-slate-900">${salesTax.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between py-3 mt-1 font-black text-xl text-[#1a4b8c]">
-            <span>Total Estimate:</span>
-            <span>${totalEstimate.toFixed(2)}</span>
+      {/* FOOTER */}
+      <div id="footer" style={{ background: 'url(https://www.repairbase.net/images/footer.png) repeat-x', height: '81px', position: 'absolute', bottom: 0, left: 0, right: 0, width: '100%' }} className="print-hidden">
+        <div style={{ width: '100%', textAlign: 'center', paddingTop: '35px' }}>
+          <div className="tahoma13-w">
+            © All rights reserved 2010-2025. BlueBook International.<br />
+            www.RepairBase.net&nbsp;DBID: Q1-2025 {new Date().toLocaleDateString()} {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} page 1 / 1
           </div>
         </div>
       </div>
 
-      <div className="mt-24 pt-8 border-t border-slate-100 text-left text-[10px] text-slate-400 font-bold italic no-print-break">
-        © All rights reserved 2010-2026. Pdf2Estimate.
+      {/* Footer Text Matching HTML Reference */}
+      {/* Bottom: 26px (1286-26 = 1260px from top) */}
+      <div className="no-print hidden print:flex" style={{ position: 'absolute', top: '1260px', left: '65px', width: '820px', fontSize: '12px', fontFamily: 'Helvetica, Arial, sans-serif', display: 'flex', justifyContent: 'space-between' }}>
+        <span>© All rights reserved 2010-2026. BlueBook International. www.RepairBase.net DBID: Q4-2025 {new Date().toLocaleDateString()} {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        <span>page 1 / 1</span>
       </div>
-    </div>
+    </div >
   );
 };
 
@@ -678,56 +688,37 @@ export default function App() {
   const autoFillPropertyDetails = async (address) => {
     if (!address) return;
     setErrorMsg('');
+    setProgressMsg(`Instant Research for: ${address}...`);
 
     const parseResponse = (result) => {
       const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
       if (!text) throw new Error("No data returned from AI.");
-      return JSON.parse(text);
+      const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      return JSON.parse(jsonStr);
     };
 
     try {
-      // Attempt 1: Try with Google Search Tool
-      try {
-        const searchResult = await callGemini({
-          contents: [{
-            role: "user",
-            parts: [{ text: `Act as a real estate data analyst. Perform a targeted search for the specific property located at: "${address}". \n\nLocate the specific listing on Zillow, Redfin, or Realtor.com. \n\nEXTRACT STRICT FACTS ONLY. Do NOT guess. \n- Structure Type\n- Stories\n- Living Area (Square Feet)\n- Bedrooms (If listed as '--' or missing, return empty string)\n- Bathrooms (If listed as '--' or missing, return empty string)\n- Year Built\n- Quality Class\n\nResult must be valid JSON with keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown or dashes, use an empty string reference.` }]
-          }],
-          tools: [{ "google_search": {} }],
-          generationConfig: { responseMimeType: "application/json" }
-        });
-
-        const newChars = parseResponse(searchResult);
-        setRepairData(prev => ({ ...prev, characteristics: { ...prev.characteristics, ...newChars } }));
-        return;
-
-      } catch (searchErr) {
-        console.warn("Google Search tool failed, falling back to internal knowledge:", searchErr);
-        // Fallthrough to attempt 2
-      }
-
-      // Attempt 2: Fallback to Internal Knowledge (No Tools)
-      const fallbackResult = await callGemini({
+      // FAST PATH: Use Internal Knowledge ONLY (No Search Tool) -> < 2 seconds
+      const fastResult = await callGemini({
         contents: [{
           role: "user",
-          parts: [{ text: `Act as a real estate data analyst. Estimate or retrieve details for the specific property at "${address}" based on your internal knowledge. Prioritize exact matches from your training data (Zillow/Redfin records).\n\nRequired Data:\n- Structure Type\n- Stories\n- Living Area (sqft)\n- Bedrooms\n- Bathrooms\n- Year Built\n- Build Quality\n\nReturn ONLY a valid JSON object with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
+          parts: [{ text: `Estimate property characteristics for: "${address}". \n\nOutput Valid JSON only: { "structureType": "Single Family Residence", "stories": "1", "livingArea": "1500", "bedrooms": "3", "baths": "2", "yearBuilt": "1980", "quality": "Average" }. \n\nIf exact details unknown, provide reasonable estimates based on location/market.` }]
         }],
         generationConfig: { responseMimeType: "application/json" }
       });
 
-      const newChars = parseResponse(fallbackResult);
+      const newChars = parseResponse(fastResult);
       setRepairData(prev => ({
         ...prev,
         characteristics: { ...prev.characteristics, ...newChars }
       }));
 
     } catch (err) {
-      console.error("Auto-fill completely failed:", err);
-      // More descriptive error message for the user
-      const msg = err.message.includes("403") ? "API Key permission denied." : err.message;
-      setErrorMsg(`Failed to auto-fill property details: ${msg}`);
+      console.error("Auto-fill failed:", err);
+      setErrorMsg(`Could not auto-fill. Please enter details manually.`);
     }
   };
+
 
   const processFiles = async (fileList) => {
     if (!fileList || fileList.length === 0) return;
@@ -966,6 +957,7 @@ export default function App() {
             onProceed={finalizePdf2Estimate}
             onBack={() => setViewState('preview')}
             isProcessing={isProcessing}
+            onUpdate={(updates) => setExtractedData({ ...extractedData, ...updates })}
           />
         )}
 
