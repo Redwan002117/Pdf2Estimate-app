@@ -9,7 +9,7 @@ services:
     volumes:
       - ./data:/app/data
     environment:
-      - VITE_GEMINI_API_KEY=
+      - VITE_GEMINI_API_KEY=change_me
     command: npm run preview
     restart: unless-stopped
 

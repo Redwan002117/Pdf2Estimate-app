@@ -45,6 +45,25 @@ This is the easiest way to run the app. You do **NOT** need to install Node.js.
 7.  Click **"Install"**.
 8.  🎉 Once done, click the **RepairBase Pro** icon on your dashboard to open it.
 
+### Option 3: CasaOS (Via Terminal / SSH) 💻
+If the UI import fails, you can install it via the terminal.
+
+1.  **Connect to your CasaOS/Server** via SSH or open the built-in terminal.
+2.  **Create a folder**:
+    ```bash
+    mkdir -p ~/repair-base-app
+    cd ~/repair-base-app
+    ```
+3.  **Download configuration**:
+    ```bash
+    wget https://raw.githubusercontent.com/Redwan002117/repair-base-app/main/docker-compose.yml
+    ```
+4.  **Run the app**:
+    ```bash
+    docker-compose up -d
+    ```
+5.  It will appear in your CasaOS dashboard automatically (managed by Docker).
+
 ---
 
 ## 🔄 Updating the App
