@@ -8,8 +8,8 @@ services:
       - ./data:/app/data
     environment:
       - VITE_GEMINI_API_KEY=change_me
-    command: >
-      sh -c "echo 'window.env = { VITE_GEMINI_API_KEY: \"'$VITE_GEMINI_API_KEY'\" };' > /usr/share/nginx/html/config.js && nginx -g 'daemon off;'"
+    environment:
+      - VITE_GEMINI_API_KEY=change_me
     restart: unless-stopped
 
 # CasaOS Metadata
