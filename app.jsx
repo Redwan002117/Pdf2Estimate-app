@@ -664,29 +664,53 @@ export default function App() {
     if (!address) return;
     setErrorMsg('');
 
+    const parseResponse = (result) => {
+      const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error("No data returned from AI.");
+      return JSON.parse(text);
+    };
+
     try {
-      const searchResult = await callGemini({
+      // Attempt 1: Try with Google Search Tool
+      try {
+        const searchResult = await callGemini({
+          contents: [{
+            role: "user",
+            parts: [{ text: `You are a real estate assistant. Retrieve the exact following details for the property at "${address}" from sources like Zillow, Redfin, Realtor.com: Structure Type, Stories, Living Area (sqft), Bedrooms, Baths, Year Built, Build Quality. \n\nReturn ONLY a valid JSON object with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
+          }],
+          tools: [{ "google_search": {} }],
+          generationConfig: { responseMimeType: "application/json" }
+        });
+
+        const newChars = parseResponse(searchResult);
+        setRepairData(prev => ({ ...prev, characteristics: { ...prev.characteristics, ...newChars } }));
+        return;
+
+      } catch (searchErr) {
+        console.warn("Google Search tool failed, falling back to internal knowledge:", searchErr);
+        // Fallthrough to attempt 2
+      }
+
+      // Attempt 2: Fallback to Internal Knowledge (No Tools)
+      const fallbackResult = await callGemini({
         contents: [{
           role: "user",
-          parts: [{ text: `You are a real estate assistant. Retrieve the exact following details for the property at "${address}" from sources like Zillow, Redfin, Realtor.com: Structure Type, Stories, Living Area (sqft), Bedrooms, Baths, Year Built, Build Quality. \n\nReturn ONLY a valid JSON object with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
+          parts: [{ text: `You are a real estate assistant. Estimate or retrieve details for the property at "${address}" based on your internal knowledge: Structure Type, Stories, Living Area (sqft), Bedrooms, Baths, Year Built, Build Quality. \n\nReturn ONLY a valid JSON object with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
         }],
-        tools: [{ "google_search": {} }],
         generationConfig: { responseMimeType: "application/json" }
       });
 
-      const text = searchResult.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!text) throw new Error("No data returned from AI.");
-
-      const newChars = JSON.parse(text);
-
+      const newChars = parseResponse(fallbackResult);
       setRepairData(prev => ({
         ...prev,
         characteristics: { ...prev.characteristics, ...newChars }
       }));
 
     } catch (err) {
-      console.error("Auto-fill failed:", err);
-      setErrorMsg("Failed to auto-fill property details. Please define the API Key properly or try again.");
+      console.error("Auto-fill completely failed:", err);
+      // More descriptive error message for the user
+      const msg = err.message.includes("403") ? "API Key permission denied." : err.message;
+      setErrorMsg(`Failed to auto-fill property details: ${msg}`);
     }
   };
 

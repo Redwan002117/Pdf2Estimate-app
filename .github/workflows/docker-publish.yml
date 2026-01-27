@@ -49,4 +49,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
+          body: |
+            ## Changes in this Release
+            - Automated Docker Build: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}`
+            - See commit history for full details.
+
 
