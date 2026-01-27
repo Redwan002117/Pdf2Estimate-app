@@ -1,100 +1,128 @@
-# 🛠️ Pdf2Estimate Pro
+<!-- Animated Header -->
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&weight=900&size=50&duration=3000&pause=1000&color=2563EB&center=true&vCenter=true&width=600&lines=Pdf2Estimate+Pro;AI+Repair+Insights;Instant+CSV+Analysis" alt="Typing SVG" />
+  
+  <p align="center">
+    <b>The Ultimate AI-Powered Repair Estimate Processor</b>
+  </p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-**Pdf2Estimate Pro** is a powerful React application designed to streamline the creation of repair estimates. It leverages AI to extract data from PDFs/Images and automatically research property details.
-
-## ✨ Features
-
-5.  ⌨️ **Type** the following command and hit Enter:
-    ```bash
-    docker compose up --build
-    ```
-    *(Note: If that doesn't work, try `docker-compose up --build`)*
-6.  ⏳ **Wait** for the process to finish. It will download dependencies and start the server.
-7.  🌐 **Success!** Once you see "Ready in ... ms", open your browser to: **[http://localhost:6969](http://localhost:6969)**.
-
-### Option 2: CasaOS (Home Server) 🏠
-
-**Easy Import:**
-1.  Open your **CasaOS Dashboard**.
-2.  Click the `+` button to install a new app.
-3.  Select **"Custom Install"** (or "Docker Compose").
-4.  Click **"Import"** (top right corner usually).
-5.  📋 **Paste** the contents of the [`docker-compose.yml`](https://github.com/Redwan002117/repair-base-app/blob/main/docker-compose.yml) file from this repository.
-    *   *Alternatively, download the `docker-compose.yml` file and upload it.*
-6.  CasaOS will automatically parse the settings (Icon, Name, Port 6969).
-7.  Click **"Install"**.
-8.  🎉 Once done, click the **Pdf2Estimate Pro** icon on your dashboard to open it.
-
-### Option 3: CasaOS (Via Terminal / SSH) 💻
-If the UI import fails, you can install it via the terminal.
-
-1.  **Connect to your CasaOS/Server** via SSH or open the built-in terminal.
-2.  **Create a folder**:
-    ```bash
-    mkdir -p ~/repair-base-app
-    cd ~/repair-base-app
-    ```
-3.  **Download configuration**:
-    ```bash
-    wget https://raw.githubusercontent.com/Redwan002117/repair-base-app/main/docker-compose.yml
-    ```
-4.  **Run the app**:
-    ```bash
-    docker compose up -d
-    ```
-    *(Note: If you get "command not found", try `docker-compose up -d`)*
-5.  It will appear in your CasaOS dashboard automatically (managed by Docker).
+  <!-- Badges -->
+  <p align="center">
+    <a href="https://github.com/Redwan002117/pdf2estimate-app/actions">
+      <img src="https://img.shields.io/github/actions/workflow/status/Redwan002117/pdf2estimate-app/docker-publish.yml?style=for-the-badge&logo=github&label=BUILD" alt="Build Status" />
+    </a>
+    <img src="https://img.shields.io/github/package-json/v/Redwan002117/pdf2estimate-app?style=for-the-badge&color=blueviolet" alt="Version" />
+    <img src="https://img.shields.io/badge/DOCKER-READY-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Ready" />
+    <img src="https://img.shields.io/badge/AI-GEMINI%20PRO-8E75B2?style=for-the-badge&logo=google&logoColor=white" alt="AI Model" />
+  </p>
+</div>
 
 ---
 
-## 🔄 Updating the App
+## ⚡ System Architecture
 
-**Option 1: Windows Script (Easiest)**
-1.  Double-click `update_app.bat` in the folder.
-2.  It will pull changes and restart Docker automatically.
-
-**Option 2: Manual Update**
-```bash
-git pull
-docker compose up --build -d
+```mermaid
+graph LR
+    User([User]) -->|Upload PDF| ViteApp[React App]
+    ViteApp -->|Extract + Analyze| Gemini[Gemini Pro Vision API]
+    ViteApp -->|Auto-Research| Search[Google Search Tool]
+    Gemini -->|JSON Data| ViteApp
+    Search -->|Property Specs| ViteApp
+    ViteApp -->|Render Estimate| PDF[Print / Save PDF]
+    style ViteApp fill:#2563EB,stroke:#fff,stroke-width:2px,color:#fff
+    style Gemini fill:#8E75B2,stroke:#fff,stroke-width:2px,color:#fff
 ```
 
+## ✨ Mission Control Features
+
+| Feature | Description | Status |
+| :--- | :--- | :---: |
+| **📄 PDF Extraction** | Instantly convert messy PDF estimates into structured data. | ✅ |
+| **🤖 Magic Wand** | Auto-research property specs (SqFt, Year Built) via Google Search. | ✅ |
+| **📊 Smart Format** | Clean, editable table view with total calculations. | ✅ |
+| **🐳 Dockerized** | One-click deployment on any server (CasaOS/Portainer). | ✅ |
+| **🖨️ Print Ready** | Professional print layout with custom logo support. | ✅ |
+
 ---
 
-### Option 3: Local Development (For Developers) 👨‍💻
-Use this if you want to modify the code or run it without Docker.
+## 🚀 Deployment Protocols
 
-**Prerequisites:**
-1.  **Install Node.js**: Download and install the "LTS" version from [nodejs.org](https://nodejs.org/).
-2.  **Verify Installation**: Run `node -v` and `npm -v` in your terminal.
+<details open>
+<summary><b>PROTOCOL 1: Docker Compose (Default)</b></summary>
+<br>
 
-**Steps to Run:**
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/Redwan002117/repair-base-app.git
-    cd repair-base-app
-    ```
-2.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-3.  **Start Development Server**:
-    ```bash
-    npm run dev
-    ```
-4.  **Access the App**:
-    The terminal will show a local URL (usually `http://localhost:5173`). Open that in your browser.
+Run strictly from the command line:
 
-## Configuration
+```bash
+# 1. Pull Latest Image
+docker compose pull
 
--   **API Key**: Click the "Settings" (gear icon) in the top right to enter your Gemini API Key. This key is required for the AI features to work.
--   **Company Logo**: You can upload your own logo in the settings menu, which will appear on the generated PDF.
+# 2. Deploy
+docker compose up -d
 
-## Usage
+# 3. Access
+# http://localhost:6969
+```
+</details>
 
-1.  **Upload**: Drag and drop a PDF estimate or image.
-2.  **Review**: Check the extracted data.
-3.  **Enhance**: Enter the property address and click the "Magic Wand" icon to auto-fill property specs.
-4.  **Print**: Click "Print Estimate" to generate the final PDF.
+<details>
+<summary><b>PROTOCOL 2: CasaOS (Home Server)</b></summary>
+<br>
+
+**Import via UI:**
+1.  Open **CasaOS Dashboard**.
+2.  Click `+` -> **Install Custom App**.
+3.  Click **Import** (Top Right).
+4.  Paste contents of: [`docker-compose.yml`](https://github.com/Redwan002117/pdf2estimate-app/blob/main/docker-compose.yml)
+5.  Click **Install**.
+
+**Terminal Install:**
+```bash
+# SSH into your CasaOS server
+mkdir -p /DATA/AppData/pdf2estimate-app
+cd /DATA/AppData/pdf2estimate-app
+
+# Download Config
+wget https://raw.githubusercontent.com/Redwan002117/pdf2estimate-app/main/docker-compose.yml
+
+# Ignite
+docker compose up -d
+```
+</details>
+
+<details>
+<summary><b>PROTOCOL 3: Local Dev (Source Code)</b></summary>
+<br>
+
+For development only:
+
+```bash
+# Clone
+git clone https://github.com/Redwan002117/pdf2estimate-app.git
+cd pdf2estimate-app
+
+# Install & Run
+npm install
+npm run dev
+```
+</details>
+
+---
+
+## ⚙️ Configuration Matrix
+
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `VITE_GEMINI_API_KEY` | Google Gemini API Key (Required for AI features). | `change_me` |
+| `PORT` | Local port binding. | `6969` |
+
+> **Pro Tip:** You can set the API Key directly in the UI (Settings Gear Icon) if you don't want to use environment variables.
+
+---
+
+### 🛡️ License
+Distributed under the MIT License. See `LICENSE` for more information.
+
+<div align="center">
+  <sub>Built with ❤️ by Redwan • Powered by Gemini AI</sub>
+</div>
