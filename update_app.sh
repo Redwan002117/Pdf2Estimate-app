@@ -112,7 +112,10 @@ echo ""
 info "Checking for application updates..."
 
 CHANGELOG_URL="https://raw.githubusercontent.com/Redwan002117/Pdf2Estimate-app/main/CHANGELOG.md"
-LOCAL_IMAGE_ID=$(docker images -q ghcr.io/redwan002117/pdf2estimate-app:main)
+VERSION_FILE="version.txt"
+CURRENT_VERSION="Unknown"
+
+[[ -f "$VERSION_FILE" ]] && CURRENT_VERSION=$(cat "$VERSION_FILE")
 
 # Fetch latest changelog preview
 echo -e "${CYAN}--- WHAT'S NEW ---${NC}"
@@ -122,7 +125,16 @@ if command -v curl &> /dev/null; then
     # Extract Latest Version
     LATEST_VERSION=$(echo "$CONTENT" | grep -o "\[v[0-9]*\.[0-9]*\.[0-9]*\]" | head -n 1)
     
-    echo -e "${GREEN}Latest Version Available: $LATEST_VERSION${NC}"
+    echo -e "Current Version:        ${YELLOW}$CURRENT_VERSION${NC}"
+    echo -e "Latest Version (Cloud): ${GREEN}$LATEST_VERSION${NC}"
+    echo ""
+    
+    if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]]; then
+        echo -e "${GREEN}✅ You are already up to date!${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Update Available!${NC}"
+    fi
+
     echo "$CONTENT" | grep -A 10 "## \[" | head -n 10
 else
     echo "Curl not found, skipping changelog preview."
@@ -140,7 +152,6 @@ if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ -n $REPLY ]]; then
 fi
 
 # 3. Pull Updates
-# 3. Pull Updates
 info "Pulling latest images from GHCR..."
 
 # Attempt to get download size (Experimental)
@@ -150,6 +161,10 @@ docker compose pull
 # Check exit code
 if [ $? -eq 0 ]; then
     success "Images downloaded successfully."
+    # Update local version file
+    if [[ -n "$LATEST_VERSION" ]]; then
+        echo "$LATEST_VERSION" > "$VERSION_FILE"
+    fi
 else
     error "Failed to pull images."
     echo "Diagnostic Checklist:"

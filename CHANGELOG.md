@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.19] - 2026-01-27
+### Features
+-   **Script**: Implemented **Local Version Tracking** in `update_app.sh`.
+-   **Functionality**:
+    -   Tracks installed version in `version.txt`.
+    -   Compares **Current Version** vs **Latest Version** (Cloud).
+    -   Notifies: "✅ You are already up to date!" if versions match.
+
 ## [v2.0.18] - 2026-01-27
 ### Features
 -   **Script**: `update_app.sh` now explicitly displays the **"Latest Version Available"** (e.g., `[v2.0.18]`) during the update check.
