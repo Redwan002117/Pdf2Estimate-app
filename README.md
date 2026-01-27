@@ -14,24 +14,37 @@
     <img src="https://img.shields.io/github/package-json/v/Redwan002117/pdf2estimate-app?style=for-the-badge&color=blueviolet" alt="Version" />
     <img src="https://img.shields.io/badge/DOCKER-READY-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Ready" />
     <img src="https://img.shields.io/badge/AI-GEMINI%20PRO-8E75B2?style=for-the-badge&logo=google&logoColor=white" alt="AI Model" />
+    <img src="https://img.shields.io/github/license/Redwan002117/pdf2estimate-app?style=for-the-badge&color=green" alt="License" />
   </p>
 </div>
 
 ---
 
+## 📑 Table of Contents
+- [⚡ System Architecture](#-system-architecture)
+- [✨ Mission Control Features](#-mission-control-features)
+- [🖥️ Visual Interface Guide](#-visual-interface-guide)
+- [🚀 Deployment Protocols](#-deployment-protocols)
+- [⚙️ Configuration Matrix](#-configuration-matrix)
+- [🛡️ License](#-license)
+
+---
+
 ## ⚡ System Architecture
 
-```mermaid
-graph LR
-    User([User]) -->|Upload PDF| ViteApp[React App]
-    ViteApp -->|Extract + Analyze| Gemini[Gemini Pro Vision API]
-    ViteApp -->|Auto-Research| Search[Google Search Tool]
-    Gemini -->|JSON Data| ViteApp
-    Search -->|Property Specs| ViteApp
-    ViteApp -->|Render Estimate| PDF[Print / Save PDF]
-    style ViteApp fill:#2563EB,stroke:#fff,stroke-width:2px,color:#fff
-    style Gemini fill:#8E75B2,stroke:#fff,stroke-width:2px,color:#fff
-```
+<div align="center">
+  <pre>
+  ┌──────────────┐      ┌───────────────┐      ┌──────────────────┐
+  │   User Upload│─────▶│  React App    │─────▶│  Gemini AI API   │
+  │   (PDF/IMG)  │      │  (Vite Engine)│◀─────│ (Vision Analysis)│
+  └──────────────┘      └───────┬───────┘      └──────────────────┘
+                                │
+                        ┌───────▼───────┐
+                        │ Google Search │
+                        │   Agent Tool  │
+                        └───────────────┘
+  </pre>
+</div>
 
 ## ✨ Mission Control Features
 
@@ -42,6 +55,25 @@ graph LR
 | **📊 Smart Format** | Clean, editable table view with total calculations. | ✅ |
 | **🐳 Dockerized** | One-click deployment on any server (CasaOS/Portainer). | ✅ |
 | **🖨️ Print Ready** | Professional print layout with custom logo support. | ✅ |
+
+---
+
+## 🖥️ Visual Interface Guide
+
+### 1. The Command Center
+> Drag and drop functionality with a clean, minimal interface. Supports PDF, PNG, and JPEG.
+
+### 2. AI Extraction Engine
+> Watch as the Gemini AI scans your document line-by-line, extracting descriptions, quantities, and costs with high precision.
+
+### 3. Property Intelligence
+> Click the **Magic Wand** 🪄 to activate the AI Agent. It searches real estate databases to find:
+> -   🏠 **Square Footage**
+> -   📅 **Year Built**
+> -   🛏️ **Bed/Bath Count**
+
+### 4. Final Output
+> A beautifully formatted, print-ready estimate that you can save as PDF or print directly.
 
 ---
 
@@ -120,8 +152,9 @@ npm run dev
 
 ---
 
-### 🛡️ License
-Distributed under the MIT License. See `LICENSE` for more information.
+## 🛡️ License
+
+Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for more information.
 
 <div align="center">
   <sub>Built with ❤️ by Redwan • Powered by Gemini AI</sub>
