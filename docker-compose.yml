@@ -2,7 +2,6 @@ version: '3.8'
 services:
   repair-base-server:
     container_name: repair-base-container
-    build: .
     image: ghcr.io/redwan002117/repair-base-app:main
     ports:
       - "6969:80"
