@@ -7,6 +7,11 @@ on:
   pull_request:
     branches: [ "main" ]
 
+  # Allow the workflow to write to the repository (required for creating releases)
+  permissions:
+    contents: write
+    packages: write
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}

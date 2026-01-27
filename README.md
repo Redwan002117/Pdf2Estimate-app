@@ -13,28 +13,25 @@ RepairBase Pro is a powerful React application designed to streamline the creati
 ## Installation Guide
 
 ### Option 1: Docker (Recommended)
-This is the easiest way to run the app without installing Node.js or dealing with dependencies.
+This is the easiest way to run the app. You do NOT need to install Node.js.
 
 **Prerequisites:**
-1.  **Install Docker Desktop**:
-    *   **Windows**: Download from [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/). Run the installer and restart your computer if asked.
-    *   **Mac/Linux**: Install Docker Desktop for your OS.
-2.  **Verify Installation**: Open a terminal (Command Prompt or PowerShell) and run:
-    ```bash
-    docker --version
-    ```
-    If you see a version number, you are ready.
+1.  **Download & Install Docker Desktop**:
+    *   **Windows**: [Download here](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe). Run the installer and strictly follow the on-screen instructions. Restart your computer after installation.
+    *   **Mac**: [Download here](https://desktop.docker.com/mac/main/amd64/Docker.dmg). Drag the icon to Applications.
+2.  **Start Docker**: Search for "Docker Desktop" in your start menu and open it. Wait until you see the green bar saying "Engine running".
 
-**Steps to Run:**
-1.  **Clone or Download** this repository to your computer.
-2.  Open your terminal in the project folder.
-3.  **Start the App**:
+**How to Run the App:**
+1.  Download this project (Click "Code" -> "Download ZIP" and extract it, or use git clone).
+2.  Open your folder in VS Code or File Explorer.
+3.  **Right-click** inside the folder and verify you see files like `docker-compose.yml`.
+4.  Open a terminal (Command Prompt/PowerShell) in this folder.
+5.  Type the following command and hit Enter:
     ```bash
     docker-compose up --build
     ```
-    *This might take a few minutes the first time.*
-4.  **Access the App**:
-    Open your browser and go to: **[http://localhost:6969](http://localhost:6969)**.
+6.  Wait for the process to finish. It will download dependencies and start the server.
+7.  Once you see "Ready in ... ms", open your browser to: **[http://localhost:6969](http://localhost:6969)**.
 
 **Updating the App (Docker):**
 To get the latest version from GitHub:

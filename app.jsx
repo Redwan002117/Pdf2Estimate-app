@@ -60,11 +60,12 @@ const styles = `
     font-size: 12px;
     margin-bottom: 10px;
   }
+  /* Table Header Centering */
   .repairbase-table th {
     background: #f1f5f9;
     border: 1px solid #cbd5e1;
     padding: 8px;
-    text-align: left;
+    text-align: center; /* CENTER ALIGNMENT REQUESTED */
     color: #0f172a;
     font-weight: bold;
     -webkit-print-color-adjust: exact;
@@ -427,7 +428,7 @@ const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
         </div>
       </div>
 
-      <div className="mt-24 pt-8 border-t border-slate-100 text-center text-[10px] text-slate-400 font-bold italic no-print-break">
+      <div className="mt-24 pt-8 border-t border-slate-100 text-left text-[10px] text-slate-400 font-bold italic no-print-break">
         © All rights reserved 2010-2026. BlueBook International. www.RepairBase.net
       </div>
     </div>
