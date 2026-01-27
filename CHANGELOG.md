@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.9] - 2026-01-27
+### Visuals
+-   **Rebrand**: Introduced "Futuristic Cyber-Shield" visual identity.
+-   **New Assets**:
+    -   `logo.svg`: Animated hexagonal logo with "P2E" monogram.
+    -   `favicon.svg`: Matching glowing node icon.
+    -   `banner.svg`: High-tech circuit grid social banner with "Intelligent Repair AI" tag.
+
 ## [v2.0.8] - 2026-01-27
 ### SEO
 -   **Optimization**: Improved Title and Meta Description for better search ranking (Score Optimization).
