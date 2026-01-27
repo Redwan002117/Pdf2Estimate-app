@@ -252,9 +252,17 @@ const ExtractionPreview = ({ data, onProceed, onBack, isProcessing }) => {
 };
 
 // --- Component: RepairBase Specialized View (Step 2) ---
-const RepairBaseView = ({ data, onUpdate, logoSettings }) => {
+const RepairBaseView = ({ data, onUpdate, logoSettings, onAutofill }) => {
+  const [isFetching, setIsFetching] = useState(false);
   const taxRate = 0.065;
   const items = Array.isArray(data.items) ? data.items : [];
+
+  const handleAutoFill = async () => {
+    if (!data.address) return;
+    setIsFetching(true);
+    await onAutofill(data.address);
+    setIsFetching(false);
+  };
 
   const areaTotal = items.reduce((sum, item) => sum + (parseFloat(item.cost) || 0), 0);
   const salesTax = areaTotal * taxRate;
@@ -281,11 +289,26 @@ const RepairBaseView = ({ data, onUpdate, logoSettings }) => {
           </div>
 
           <div className="text-sm font-bold text-slate-700 uppercase tracking-tight mb-1">Property Address:</div>
-          <textarea
-            className="fillable-input w-80 h-16 font-semibold text-base text-slate-900"
-            value={addressDisplay}
-            onChange={(e) => onUpdate({ address: e.target.value })}
-          />
+          <div className="flex items-start gap-2">
+            <textarea
+              className="fillable-input w-80 h-16 font-semibold text-base text-slate-900 resize-none"
+              value={addressDisplay}
+              onChange={(e) => onUpdate({ address: e.target.value })}
+              placeholder="Enter address..."
+            />
+            <button
+              onClick={handleAutoFill}
+              disabled={isFetching || !data.address}
+              className="mt-1 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md no-print group"
+              title="Auto-Fill Property Details from Web"
+            >
+              {isFetching ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Sparkles className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              )}
+            </button>
+          </div>
         </div>
         <div className="text-right w-64">
           <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
@@ -637,6 +660,36 @@ export default function App() {
     }
   };
 
+  const autoFillPropertyDetails = async (address) => {
+    if (!address) return;
+    setErrorMsg('');
+
+    try {
+      const searchResult = await callGemini({
+        contents: [{
+          role: "user",
+          parts: [{ text: `You are a real estate assistant. Retrieve the exact following details for the property at "${address}" from sources like Zillow, Redfin, Realtor.com: Structure Type, Stories, Living Area (sqft), Bedrooms, Baths, Year Built, Build Quality. \n\nReturn ONLY a valid JSON object with these keys: structureType, stories, livingArea, bedrooms, baths, yearBuilt, quality. \nIf a value is unknown, use an empty string.` }]
+        }],
+        tools: [{ "google_search": {} }],
+        generationConfig: { responseMimeType: "application/json" }
+      });
+
+      const text = searchResult.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error("No data returned from AI.");
+
+      const newChars = JSON.parse(text);
+
+      setRepairData(prev => ({
+        ...prev,
+        characteristics: { ...prev.characteristics, ...newChars }
+      }));
+
+    } catch (err) {
+      console.error("Auto-fill failed:", err);
+      setErrorMsg("Failed to auto-fill property details. Please define the API Key properly or try again.");
+    }
+  };
+
   const processFiles = async (fileList) => {
     if (!fileList || fileList.length === 0) return;
     setErrorMsg('');
@@ -867,6 +920,7 @@ export default function App() {
               data={repairData}
               onUpdate={(updates) => setRepairData({ ...repairData, ...updates })}
               logoSettings={logoSettings}
+              onAutofill={autoFillPropertyDetails}
             />
           </div>
         )}
