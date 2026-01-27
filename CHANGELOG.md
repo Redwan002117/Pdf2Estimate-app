@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.11] - 2026-01-27
+### Fixed
+-   **Rebrand**: Updated `update_app.sh` header text to "Pdf2Estimate Pro" (previously "Repair Base App").
+-   **Documentation**: Updated troubleshooting guides to point to the renamed `Pdf2Estimate-app` repository.
+
 ## [v2.0.10] - 2026-01-27
 ### Fixed
 -   **Scripts**: Updated `update_app.sh` to use modern `docker compose` syntax instead of legacy `docker-compose`.
@@ -59,12 +64,3 @@ All notable changes to this project will be documented in this file.
 -   **Rebrand**: Fully renamed from "RepairBase Pro" to "Pdf2Estimate Pro".
 -   **Package**: Migrated to `pdf2estimate-app` on GHCR.
 -   **Cleanup**: Removed legacy branding references.
-
-## [v1.0.19]
-### Cleanse
--   Removed remaining "RepairBase" references while preserving PDF export logic.
-
-## [v1.0.18]
-### Initial Rename
--   Renamed application to Pdf2Estimate Pro.
--   Updated Docker image references.

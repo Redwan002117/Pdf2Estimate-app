@@ -12,7 +12,7 @@ error_exit() {
 }
 
 echo "=========================================="
-echo "     Repair Base App - Update Utility"
+echo "     Pdf2Estimate Pro - Update Utility"
 echo "=========================================="
 echo ""
 
