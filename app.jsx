@@ -8,10 +8,11 @@ import {
 import html2pdf from 'html2pdf.js';
 import * as pdfjsLib from 'pdfjs-dist';
 
-import PdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-
-// Worker is served from the same pdfjs-dist package as the API — versions always match
-pdfjsLib.GlobalWorkerOptions.workerSrc = PdfjsWorker;
+// pdfjs-dist v5 recommended: use new URL so Vite resolves worker from the same package
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url
+).toString();
 
 // --- Global: Gemini API Configuration ---
 // API Key is now managed via component state and localStorage
