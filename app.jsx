@@ -7,10 +7,10 @@ import {
 } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import * as pdfjsLib from 'pdfjs-dist';
-import PdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-// Use the locally bundled worker — no CDN dependency
-pdfjsLib.GlobalWorkerOptions.workerSrc = PdfjsWorker;
+// Pin worker to the exact same version as the installed pdfjs-dist (4.10.38)
+// Using CDN avoids the Vite bundle picking up a mismatched cached version
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
 
 // --- Global: Gemini API Configuration ---
 // API Key is now managed via component state and localStorage
@@ -764,7 +764,7 @@ export default function App() {
 
   // pdfjs is now bundled
 
-  const callGemini = async (payload, model = 'gemini-1.5-flash') => {
+  const callGemini = async (payload, model = 'gemini-2.0-flash') => {
     let lastError = null;
     const maxRetries = 5;
 
@@ -834,7 +834,7 @@ export default function App() {
               }
             }
           }
-        }, 'gemini-1.5-flash');
+        }, 'gemini-2.0-flash');
 
         const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
         if (!text) continue;
@@ -900,7 +900,7 @@ export default function App() {
             }
           }
         }
-      }, 'gemini-1.5-pro');
+      }, 'gemini-2.0-flash');
 
       const parsedChars = JSON.parse(searchResult.candidates?.[0]?.content?.parts?.[0]?.text || "{}");
       if (parsedChars) characteristics = parsedChars;
@@ -938,7 +938,7 @@ export default function App() {
           parts: [{ text: `Estimate property characteristics for: "${address}". \n\nOutput Valid JSON only: { "structureType": "Single Family Residence", "stories": "1", "livingArea": "1500", "bedrooms": "3", "baths": "2", "yearBuilt": "1980", "quality": "Average" }. \n\nIf exact details unknown, provide reasonable estimates based on location/market.` }]
         }],
         generationConfig: { responseMimeType: "application/json" }
-      }, 'gemini-1.5-flash');
+      }, 'gemini-2.0-flash');
 
       const newChars = parseResponse(fastResult);
       setRepairData(prev => ({
