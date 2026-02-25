@@ -766,11 +766,37 @@ export default function App() {
 
   // pdfjs is now bundled
 
+  // --- Proactive Token Bucket for Gemini Free Tier (15 RPM) ---
+  // Tracks timestamps of recent requests in a 60s window.
+  // Before each request, waits until there's a free slot.
   const callGemini = async (payload, model = 'gemini-2.0-flash') => {
-    let lastError = null;
-    const maxRetries = 5;
+    const MAX_RPM = 14; // stay under free-tier limit of 15
+    const WINDOW_MS = 60_000;
 
-    for (let i = 0; i < maxRetries; i++) {
+    // Shared across all calls in this session (module-level via ref would be cleaner,
+    // but closure on the component works fine since App is a singleton)
+    if (!callGemini._timestamps) callGemini._timestamps = [];
+    const ts = callGemini._timestamps;
+
+    // Wait until there's a slot in the rolling 60s window
+    while (true) {
+      const now = Date.now();
+      // Drop timestamps older than 60s
+      callGemini._timestamps = ts.filter(t => now - t < WINDOW_MS);
+      if (callGemini._timestamps.length < MAX_RPM) break;
+      const oldest = callGemini._timestamps[0];
+      const wait = WINDOW_MS - (now - oldest) + 200; // +200ms buffer
+      console.log(`Rate bucket full (${callGemini._timestamps.length}/${MAX_RPM} RPM). Waiting ${Math.ceil(wait / 1000)}s...`);
+      setProgressMsg(`AI rate limit: waiting ${Math.ceil(wait / 1000)}s before next request...`);
+      await new Promise(r => setTimeout(r, wait));
+    }
+
+    // Record this request slot
+    callGemini._timestamps.push(Date.now());
+
+    // Execute with retry only for transient server errors
+    let lastError = null;
+    for (let i = 0; i < 3; i++) {
       try {
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
@@ -786,18 +812,20 @@ export default function App() {
         lastError = new Error(`AI API Error: ${response.status} ${errorText}`);
 
         if (response.status === 429) {
-          const waitTime = 20000 + (Math.pow(2, i) * 5000);
-          console.warn(`Rate limit hit (Attempt ${i + 1}). Waiting ${waitTime / 1000}s before retry...`);
-          await new Promise(r => setTimeout(r, waitTime));
+          // Bucket was bypassed somehow — wait 60s and retry once
+          console.warn('Unexpected 429 — waiting 60s');
+          setProgressMsg('Rate limited by API — waiting 60s...');
+          await new Promise(r => setTimeout(r, 60_000));
+          callGemini._timestamps = []; // reset so next call goes immediately
           continue;
         }
 
-        if (response.status < 500) break;
+        if (response.status < 500) break; // 4xx non-rate errors: don't retry
       } catch (err) { lastError = err; }
 
       await new Promise(r => setTimeout(r, Math.pow(2, i) * 2000));
     }
-    throw lastError || new Error("AI Service Failed");
+    throw lastError || new Error('AI Service Failed');
   };
 
   const startExtraction = async () => {
