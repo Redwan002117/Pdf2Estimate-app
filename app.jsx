@@ -7,10 +7,10 @@ import {
 } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import * as pdfjsLib from 'pdfjs-dist';
+import PdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-// Use a stable, matched version of PDF.js and its worker
-const PDFJS_VERSION = '4.10.38';
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
+// Use the locally bundled worker — no CDN dependency
+pdfjsLib.GlobalWorkerOptions.workerSrc = PdfjsWorker;
 
 // --- Global: Gemini API Configuration ---
 // API Key is now managed via component state and localStorage
@@ -748,17 +748,27 @@ export default function App() {
   // --- Full Page Drag & Drop Logic ---
   const handleDragOver = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setIsDragging(true);
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    if (e.target === document.body || e.target.id === 'root' || e.target.classList.contains('drag-overlay')) {
+    // Only dismiss when leaving the window entirely
+    if (e.clientX === 0 && e.clientY === 0) {
       setIsDragging(false);
     }
   };
+
+  // Safety: reset if drag ends without a drop (e.g. Escape key)
+  useEffect(() => {
+    const onDragEnd = () => setIsDragging(false);
+    window.addEventListener('dragend', onDragEnd);
+    window.addEventListener('drop', onDragEnd);
+    return () => {
+      window.removeEventListener('dragend', onDragEnd);
+      window.removeEventListener('drop', onDragEnd);
+    };
+  }, []);
 
   const handleDrop = (e) => {
     e.preventDefault();
