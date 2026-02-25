@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.31] - 2026-02-25
+### Fixes
+- **PDF.js**: Fixed runtime error by switching from global `window.pdfjsLib` to imported module reference and stabilizing worker source URL.
+
 ## [v2.0.30] - 2026-02-25
 ### Fixes
 - **PDF.js**: Fixed runtime error `No "GlobalWorkerOptions.workerSrc" specified` in production build by explicitly setting worker source.
