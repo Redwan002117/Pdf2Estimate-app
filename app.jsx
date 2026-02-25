@@ -8,9 +8,10 @@ import {
 import html2pdf from 'html2pdf.js';
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Pin worker to the exact same version as the installed pdfjs-dist (4.10.38)
-// Using CDN avoids the Vite bundle picking up a mismatched cached version
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
+import PdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+
+// Worker is served from the same pdfjs-dist package as the API — versions always match
+pdfjsLib.GlobalWorkerOptions.workerSrc = PdfjsWorker;
 
 // --- Global: Gemini API Configuration ---
 // API Key is now managed via component state and localStorage
