@@ -8,22 +8,7 @@ export default defineConfig({
         hmr: {
             protocol: 'ws',
             host: 'localhost',
-        },
-    },
-    optimizeDeps: {
-        // Exclude pdfjs-dist from Vite pre-bundling so it uses its own ESM output.
-        // This prevents version mismatches between the API bundle and the worker file.
-        exclude: ['pdfjs-dist'],
-    },
-    build: {
-        rollupOptions: {
-            output: {
-                manualChunks(id) {
-                    if (id.includes('pdfjs-dist')) {
-                        return 'pdfjs';
-                    }
-                },
-            },
+            port: 5173,
         },
     },
 })
