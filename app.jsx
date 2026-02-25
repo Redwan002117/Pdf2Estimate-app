@@ -36,121 +36,325 @@ const useScript = (src, globalName) => {
   return { loaded, error };
 };
 
-// --- Custom Styles ---
+// --- Custom Styles (UI-UX Pro Max: Dark Glassmorphism | PropTech SaaS) ---
 const styles = `
-  /* --- RESET & BASIC --- */
-  * { margin:0; padding:0; }
-  .textLayer { position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; opacity: 0; line-height: 1.0; }
-  .pdf-page-container { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: relative; background: white; border-radius: 8px; overflow: hidden; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-  /* --- ADMIN.CSS PORT & SCREENSHOT REFINEMENT --- */
-  /* HTML Reference Styles */
+  /* --- RESET & BASE --- */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* Dark canvas background with subtle grid */
+  .app-root {
+    background: #070d1a;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59,130,246,0.15), transparent),
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: auto, 48px 48px, 48px 48px;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #e2e8f0;
+    min-height: 100vh;
+  }
+
+  /* --- HEADER (glass navbar) --- */
+  .app-header {
+    background: rgba(10, 15, 30, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(59,130,246,0.15);
+    position: sticky; top: 0; z-index: 50;
+    padding: 0 2rem;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .app-logo-badge {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    border-radius: 12px;
+    padding: 8px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px rgba(59,130,246,0.4);
+  }
+  .app-header h1 {
+    font-size: 1.125rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #60a5fa, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+  }
+  .app-header p { font-size: 10px; color: rgba(148,163,184,0.7); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; }
+
+  /* --- BUTTONS --- */
+  .btn-primary {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    border: 1px solid rgba(59,130,246,0.4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(59,130,246,0.45); background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-download {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    border: 1px solid rgba(6,182,212,0.4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(6,182,212,0.3);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-download:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(6,182,212,0.45); }
+  .btn-download:active { transform: scale(0.97); }
+
+  .btn-icon {
+    padding: 9px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: rgba(148,163,184,0.7);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .btn-icon:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; border-color: rgba(255,255,255,0.1); }
+
+  .btn-danger-text {
+    display: flex; align-items: center; gap: 6px;
+    background: transparent; border: none;
+    color: rgba(148,163,184,0.6);
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    cursor: pointer; transition: color 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-danger-text:hover { color: #f87171; }
+
+  /* --- GLASS CARD --- */
+  .glass-card {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+  }
+
+  /* --- UPLOAD ZONE --- */
+  .upload-zone {
+    background: rgba(255,255,255,0.03);
+    border: 2px dashed rgba(59,130,246,0.3);
+    border-radius: 28px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative; overflow: hidden;
+  }
+  .upload-zone::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(59,130,246,0.06), transparent 70%);
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .upload-zone:hover { border-color: rgba(59,130,246,0.7); background: rgba(59,130,246,0.04); box-shadow: 0 0 40px rgba(59,130,246,0.1); }
+  .upload-zone:hover::before { opacity: 1; }
+
+  .upload-icon-wrapper {
+    background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(6,182,212,0.15));
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 24px;
+    transition: transform 0.25s ease;
+  }
+  .upload-zone:hover .upload-icon-wrapper { transform: scale(1.08) translateY(-2px); }
+
+  .upload-pill {
+    margin-top: 28px;
+    padding: 8px 24px;
+    border-radius: 100px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.25);
+    font-size: 11px; font-weight: 800;
+    color: #60a5fa;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    transition: all 0.2s;
+  }
+  .upload-zone:hover .upload-pill {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    border-color: transparent; color: white;
+    box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+  }
+
+  /* --- DRAG OVERLAY --- */
+  .drag-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(7, 13, 26, 0.85);
+    backdrop-filter: blur(16px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .drag-ring {
+    border: 3px dashed rgba(59,130,246,0.7);
+    border-radius: 32px;
+    padding: 64px 96px;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    background: rgba(59,130,246,0.06);
+    box-shadow: 0 0 80px rgba(59,130,246,0.2), inset 0 0 60px rgba(59,130,246,0.05);
+    animation: drag-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes drag-pulse { 0%,100% { box-shadow: 0 0 60px rgba(59,130,246,0.2); } 50% { box-shadow: 0 0 100px rgba(59,130,246,0.4); } }
+
+  /* --- SETTINGS PANEL --- */
+  .settings-panel {
+    background: rgba(10,15,30,0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,130,246,0.1);
+  }
+  .settings-label { font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; display: block; }
+  .settings-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .settings-input:focus { border-color: rgba(59,130,246,0.6); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+  .settings-input::placeholder { color: rgba(148,163,184,0.4); }
+
+  /* --- PREVIEW BADGE --- */
+  .preview-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 11px; font-weight: 700;
+    color: #60a5fa;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 24px;
+  }
+  .preview-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #3b82f6;
+    box-shadow: 0 0 6px #3b82f6;
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* --- PROCESSING MODAL --- */
+  .processing-modal {
+    background: rgba(10,15,30,0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 24px;
+    padding: 48px 52px;
+    text-align: center;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(59,130,246,0.1);
+  }
+  .spinner-ring {
+    width: 56px; height: 56px;
+    border: 3px solid rgba(59,130,246,0.2);
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 24px;
+    box-shadow: 0 0 20px rgba(59,130,246,0.3);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* --- ERROR BANNER --- */
+  .error-banner {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 14px;
+    padding: 14px 18px;
+    color: #fca5a5;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 20px; width: 100%; max-width: 640px;
+  }
+
+  /* --- PDF VIEWER --- */
+  .textLayer { position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; opacity: 0; line-height: 1; }
+  .pdf-page-container {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    margin-bottom: 2rem;
+    position: relative; background: white;
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* --- ESTIMATE PAPER (unchanged — must match reference) --- */
   .pdf2estimate-paper {
     background: white;
-    width: 909px; /* Matched from index.html (Canvas width) */
-    min-height: 1286px; /* Matched height */
-    padding: 0px; /* REMOVED PADDING for 1:1 Absolute Coordinate Match */
+    width: 909px;
+    min-height: 1286px;
+    padding: 0;
     margin: 20px auto;
-    box-shadow: 0 0 40px rgba(0,0,0,0.15);
-    font-family: Helvetica, Arial, sans-serif; /* Matched font */
+    box-shadow: 0 0 60px rgba(0,0,0,0.4);
+    font-family: Helvetica, Arial, sans-serif;
     color: #000;
     position: relative;
-    box-sizing: border-box; /* Ensure borders don't add width */
+    box-sizing: border-box;
   }
-
   .s1-header-label { font-size: 23px; font-family: Helvetica, Arial, sans-serif; color: #000; font-weight: normal; margin-bottom: 2px; }
   .header-input { font-size: 14px; font-weight: bold; text-transform: uppercase; color: #000; width: 100%; border: none; outline: none; }
-  .header-address-input { font-size: 15px; font-weight: 800; text-transform: uppercase; color: #000; width: 100%; border: none; outline: none; font-family: Helvetica, Arial, sans-serif; } 
+  .header-address-input { font-size: 15px; font-weight: 800; text-transform: uppercase; color: #000; width: 100%; border: none; outline: none; font-family: Helvetica, Arial, sans-serif; }
   .s0-header-right-label { font-size: 17px; font-family: Helvetica, Arial, sans-serif; color: #000; text-align: right; line-height: 1.2; }
   .s0-header-right-val { font-size: 17px; font-family: Helvetica, Arial, sans-serif; font-weight: bold; color: #000; text-align: right; line-height: 1.2; }
-
-  /* Property Characteristics Table (Blue/Grey Theme) */
-  .prop-chars-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    border: 1px solid #999;
-  }
-  .prop-chars-table th {
-    background: #b9c9fe; /* Periwinkle Blue from Admin.css/Screenshot */
-    color: #000;
-    font-weight: bold;
-    font-size: 12px;
-    text-align: center;
-    border: 1px solid #777;
-    padding: 2px; /* Super compact */
-    font-size: 11px; /* Slightly smaller for compact look */
-    font-weight: bold;
-  }
-  .prop-chars-table td {
-    background: #ffffff;
-    text-align: center;
-    border: 1px solid #777;
-    padding: 2px;
-    font-size: 11px;
-    font-weight: bold;
-  }
-  
+  .prop-chars-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #999; }
+  .prop-chars-table th { background: #b9c9fe; color: #000; font-weight: bold; text-align: center; border: 1px solid #777; padding: 2px; font-size: 11px; }
+  .prop-chars-table td { background: #fff; text-align: center; border: 1px solid #777; padding: 2px; font-size: 11px; font-weight: bold; }
   .tahoma12-blue { font-family: Tahoma, Geneva, sans-serif; font-size: 12px; line-height: 16px; color: #02598b; }
   .tahoma12-gray { font-family: Tahoma, Geneva, sans-serif; font-size: 12px; line-height: 16px; color: #000; }
   .tahoma14-gold { font-family: Tahoma, Geneva, sans-serif; font-size: 14px; color: #b18d1e; text-decoration: none; font-weight: bold; }
   .tahoma13-gold { font-family: Tahoma, Geneva, sans-serif; font-size: 13px; color: #b18d1e; text-decoration: none; font-weight: bold; }
-  .arial18-blue, .arial20-blue { font-family: Tahoma, Geneva, sans-serif; font-size: 18px; color: #02598b; font-weight: normal; padding-bottom:15px; }
-
-  /* Table Style: #box-table-b (Repair Estimate) */
-  #box-table-b {
-    font-family: Helvetica, Arial, sans-serif;
-    width: 100%;
-    border-collapse: collapse;
-    border-top: 1px solid #000; 
-    border-bottom: 1px solid #000; 
-  }
-  #box-table-b th {
-    font-size: 14px; /* s4 class */
-    padding: 3px; 
-    background: #f8faff; /* g1 class fill */
-    color: #004293; /* s4 color */
-    border-right: 1px solid #aabcfe; 
-    border-left: 1px solid #aabcfe;
-    border-bottom: 1px solid #aabcfe;
-    text-align: left;
-    font-weight: bold;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-  #box-table-b td {
-    padding: 3px; 
-    background: #ffffff; 
-    border-right: 1px solid #aabcfe;
-    border-left: 1px solid #aabcfe;
-    color: #000;
-    font-size: 14px; /* s5 class */
-    vertical-align: top;
-  }
-  
+  .arial18-blue, .arial20-blue { font-family: Tahoma, Geneva, sans-serif; font-size: 18px; color: #02598b; font-weight: normal; padding-bottom: 15px; }
+  #box-table-b { font-family: Helvetica, Arial, sans-serif; width: 100%; border-collapse: collapse; border-top: 1px solid #000; border-bottom: 1px solid #000; }
+  #box-table-b th { font-size: 14px; padding: 3px; background: #f8faff; color: #004293; border-right: 1px solid #aabcfe; border-left: 1px solid #aabcfe; border-bottom: 1px solid #aabcfe; text-align: left; font-weight: bold; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #box-table-b td { padding: 3px; background: #fff; border-right: 1px solid #aabcfe; border-left: 1px solid #aabcfe; color: #000; font-size: 14px; vertical-align: top; }
   .fillable-input { border: none; border-bottom: 1px solid transparent; width: 100%; outline: none; background: transparent; font-family: Helvetica, Arial, sans-serif; }
   .fillable-input:hover { border-bottom: 1px solid #eee; }
-  
-  .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* --- PRINT STYLES --- */
+  /* --- ANIMATIONS --- */
+  .animate-fade-in { animation: fadeIn 0.35s ease-out forwards; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-fade-up { animation: fadeUp 0.4s ease-out forwards; }
+
+  /* --- PRINT --- */
   @media print {
     body * { visibility: hidden; }
     body, html { background: white; height: 100%; overflow: visible; padding: 0; margin: 0; }
     #pdf2estimate-pdf, #pdf2estimate-pdf * { visibility: visible; }
-    #pdf2estimate-pdf {
-      position: absolute; left: 0; top: 0;
-      margin: 0; padding: 0;
-      width: 100%; height: 100%;
-      background: white; box-shadow: none; z-index: 9999;
-      transform: none; /* Let the browser scale content to fit */
-    }
+    #pdf2estimate-pdf { position: absolute; left: 0; top: 0; margin: 0; padding: 0; width: 100%; height: 100%; background: white; box-shadow: none; z-index: 9999; }
     .no-print { display: none !important; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    @page { margin: 0; size: auto; } /* Remove browser default margins */
+    @page { margin: 0; size: auto; }
     .break-inside-avoid { break-inside: avoid; page-break-inside: avoid; }
-    .animate-fade-in { animation: none !important; transform: none !important; }
+    .animate-fade-in, .animate-fade-up { animation: none !important; transform: none !important; }
     .print-hidden { display: none; }
   }
 `;
@@ -809,7 +1013,7 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900 relative"
+      className="app-root flex flex-col relative"
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -818,28 +1022,31 @@ export default function App() {
 
       {/* Global Drag Overlay */}
       {isDragging && (
-        <div className="drag-overlay fixed inset-0 bg-blue-600/90 z-[9999] flex flex-col items-center justify-center backdrop-blur-sm transition-all animate-fade-in pointer-events-none">
-          <Upload className="w-24 h-24 text-white mb-6 animate-bounce" />
-          <h2 className="text-4xl font-black text-white tracking-tight">Drop Files to Upload</h2>
-          <p className="text-blue-100 mt-2 font-medium">Release to process estimates</p>
+        <div className="drag-overlay animate-fade-in">
+          <div className="drag-ring">
+            <Upload style={{ width: 48, height: 48, color: '#60a5fa' }} />
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#e2e8f0', letterSpacing: '-0.02em' }}>Drop to Upload</h2>
+            <p style={{ color: '#94a3b8', fontWeight: 500 }}>Release to process your estimate files</p>
+          </div>
         </div>
       )}
 
       {/* Header */}
-      <header className="bg-white border-b px-8 py-4 flex items-center justify-between sticky top-0 z-50 no-print shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="bg-[#1a4b8c] p-2 rounded-xl shadow-lg shadow-blue-100">
-            <Calculator className="text-white w-5 h-5" />
+      <header className="app-header no-print">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="app-logo-badge">
+            <Calculator style={{ color: 'white', width: 18, height: 18 }} />
           </div>
           <div>
-            <h1 className="text-xl font-black text-[#1a4b8c] tracking-tight">Pdf2Estimate</h1>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Pdf2Estimate Pro Converter</p>
+            <h1>Pdf2Estimate</h1>
+            <p>AI-Powered Repair Estimate Converter</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {currentFiles.length > 0 && (
             <button
+              className="btn-danger-text"
               onClick={() => {
                 setViewState('upload');
                 setCurrentFiles([]);
@@ -847,66 +1054,61 @@ export default function App() {
                 setExtractedData(null);
                 setRepairData(null);
               }}
-              className="flex items-center gap-2 text-slate-400 hover:text-red-500 font-bold text-xs uppercase tracking-wider transition-colors mr-2"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 style={{ width: 14, height: 14 }} />
               Clear
             </button>
           )}
 
           {/* Settings Button */}
-          <div className="relative">
+          <div style={{ position: 'relative' }}>
             <button
+              className="btn-icon"
               onClick={() => setShowSettings(!showSettings)}
-              className={`p-2.5 rounded-xl transition-colors ${showSettings ? 'bg-slate-100 text-[#1a4b8c]' : 'text-slate-400 hover:text-[#1a4b8c] hover:bg-slate-50'}`}
+              style={showSettings ? { background: 'rgba(59,130,246,0.15)', color: '#60a5fa', borderColor: 'rgba(59,130,246,0.3)' } : {}}
             >
-              <Settings className="w-5 h-5" />
+              <Settings style={{ width: 18, height: 18 }} />
             </button>
             {showSettings && (
-              <div className="settings-panel absolute top-full right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-slate-100 p-4 z-[100] animate-fade-in">
-                <div className="flex justify-between items-center mb-3 border-b pb-2">
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Customization</h3>
-                  <button onClick={() => setShowSettings(false)} className="text-slate-400 hover:text-red-500"><X className="w-4 h-4" /></button>
+              <div className="settings-panel animate-fade-in" style={{ position: 'absolute', top: 'calc(100% + 10px)', right: 0, width: 300, padding: '20px', zIndex: 100 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, paddingBottom: 12, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Settings</span>
+                  <button className="btn-icon" onClick={() => setShowSettings(false)} style={{ padding: 4 }}><X style={{ width: 15, height: 15 }} /></button>
                 </div>
-                <div className="mb-4">
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Gemini API Key</label>
+                <div style={{ marginBottom: 16 }}>
+                  <label className="settings-label">Gemini API Key</label>
                   <input
                     type="password"
-                    className="w-full text-xs p-2 border rounded bg-slate-50 mb-2"
-                    placeholder="Enter Gemini API Key (Required for AI)"
+                    className="settings-input"
+                    style={{ marginBottom: 6 }}
+                    placeholder="Enter Gemini API Key…"
                     value={apiKey}
                     onChange={(e) => updateApiKey(e.target.value)}
                   />
-                  <p className="text-[10px] text-slate-400">Key is saved locally in your browser.</p>
+                  <p style={{ fontSize: 11, color: 'rgba(148,163,184,0.5)' }}>Stored locally in your browser.</p>
                 </div>
-                <div className="mb-4">
-                  <label className="block text-sm font-bold text-slate-700 mb-1">AI Intelligence</label>
-                  <div className="flex items-center gap-2 bg-blue-50 p-2 rounded border border-blue-100">
-                    <Sparkles className="w-3 h-3 text-blue-600" />
-                    <span className="text-[10px] font-bold text-blue-800 uppercase tracking-tighter">Automated Model Selection Active</span>
+                <div style={{ marginBottom: 16 }}>
+                  <label className="settings-label">AI Model</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 10, padding: '8px 12px' }}>
+                    <Sparkles style={{ width: 13, height: 13, color: '#60a5fa' }} />
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Auto-Select Active</span>
                   </div>
-                  <p className="text-[10px] text-slate-400 mt-1 italic">Optimal models routed per task.</p>
                 </div>
-                <div className="mb-4">
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Logo URL / Upload</label>
+                <div>
+                  <label className="settings-label">Custom Logo URL</label>
                   <input
                     type="text"
-                    className="w-full text-xs p-2 border rounded bg-slate-50 mb-2"
+                    className="settings-input"
+                    style={{ marginBottom: 8 }}
                     placeholder="https://example.com/logo.png"
                     value={logoSettings.url}
                     onChange={(e) => setLogoSettings({ url: e.target.value })}
                   />
-                  <div className="relative">
-                    <input
-                      type="file"
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files[0]) setLogoSettings({ url: URL.createObjectURL(e.target.files[0]) });
-                      }}
-                    />
-                    <button className="w-full py-2 bg-slate-100 text-slate-600 text-xs font-bold rounded hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
-                      <Upload className="w-3 h-3" /> Upload Image
+                  <div style={{ position: 'relative' }}>
+                    <input type="file" accept="image/*" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }}
+                      onChange={(e) => { if (e.target.files[0]) setLogoSettings({ url: URL.createObjectURL(e.target.files[0]) }); }} />
+                    <button style={{ width: '100%', padding: '8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, color: '#94a3b8', fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontFamily: 'Inter, sans-serif' }}>
+                      <Upload style={{ width: 12, height: 12 }} /> Upload Image
                     </button>
                   </div>
                 </div>
@@ -917,97 +1119,105 @@ export default function App() {
           {viewState !== 'upload' && (
             <>
               {viewState === 'preview' && (
-                <button
-                  onClick={startExtraction}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-[#1a4b8c] text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-800 transition-all active:scale-95"
-                >
-                  <Sparkles className="w-4 h-4" /> Extract to HTML
+                <button className="btn-primary" onClick={startExtraction}>
+                  <Sparkles style={{ width: 15, height: 15 }} /> Extract Data
                 </button>
               )}
               {viewState === 'pdf2estimate' && (
                 <button
+                  className="btn-download"
                   onClick={() => {
                     const element = document.getElementById('pdf2estimate-pdf');
                     const opt = {
                       margin: [0, 0, 0, 0],
                       filename: `Estimate_${repairData?.address?.replace(/[^a-z0-9]/gi, '_') || 'Report'}.pdf`,
                       image: { type: 'jpeg', quality: 0.98 },
-                      html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        logging: false,
-                        letterRendering: true,
-                        allowTaint: true
-                      },
+                      html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true, allowTaint: true },
                       jsPDF: { unit: 'px', format: [909, 1286], orientation: 'portrait', compress: true },
                       pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                     };
                     html2pdf().set(opt).from(element).save();
                   }}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-[#0c699e] text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-[#0a5c8a] transition-all active:scale-95"
                 >
-                  <Download className="w-4 h-4" /> Download PDF
+                  <Download style={{ width: 15, height: 15 }} /> Download PDF
                 </button>
               )}
-              <button
-                onClick={() => { setCurrentFiles([]); setViewState('upload'); setExtractedData(null); setRepairData(null); canvasRefs.current = {}; }}
-                className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
-              >
-                <Trash2 className="w-5 h-5" />
+              <button className="btn-icon" style={{ color: 'rgba(148,163,184,0.6)' }}
+                onClick={() => { setCurrentFiles([]); setViewState('upload'); setExtractedData(null); setRepairData(null); canvasRefs.current = {}; }}>
+                <Trash2 style={{ width: 18, height: 18 }} />
               </button>
             </>
           )}
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto p-8 flex flex-col items-center">
+      <main style={{ flex: 1, overflowY: 'auto', padding: '2.5rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {isProcessing && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center z-[100]">
-            <div className="bg-white p-10 rounded-3xl shadow-2xl text-center max-w-xs w-full animate-fade-in">
-              <Loader2 className="w-16 h-16 text-[#1a4b8c] animate-spin mx-auto mb-6" />
-              <h3 className="text-xl font-black text-slate-900">Processing</h3>
-              <p className="text-slate-500 text-sm mt-2 font-medium leading-relaxed">{progressMsg}</p>
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(7,13,26,0.8)', backdropFilter: 'blur(16px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}>
+            <div className="processing-modal animate-fade-in">
+              <div className="spinner-ring"></div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#e2e8f0', marginBottom: 8 }}>Processing</h3>
+              <p style={{ color: '#64748b', fontSize: 13, fontWeight: 500, lineHeight: 1.6 }}>{progressMsg}</p>
             </div>
           </div>
         )}
 
         {errorMsg && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl flex items-center gap-3 animate-fade-in w-full max-w-2xl">
-            <AlertCircle className="w-5 h-5 flex-shrink-0" /> <span className="text-sm font-bold">{errorMsg}</span>
+          <div className="error-banner animate-fade-in">
+            <AlertCircle style={{ width: 18, height: 18, flexShrink: 0, color: '#f87171' }} />
+            <span>{errorMsg}</span>
           </div>
         )}
 
         {viewState === 'upload' && (
-          <div className="w-full max-w-3xl mt-12 animate-fade-in">
+          <div style={{ width: '100%', maxWidth: 640, marginTop: 60 }} className="animate-fade-up">
+            {/* Hero label */}
+            <div style={{ textAlign: 'center', marginBottom: 32 }}>
+              <h2 style={{ fontSize: '2rem', fontWeight: 900, background: 'linear-gradient(to right, #e2e8f0, #94a3b8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '-0.03em', marginBottom: 8 }}>Repair Estimate Converter</h2>
+              <p style={{ color: '#475569', fontSize: 14, fontWeight: 500 }}>Upload a PDF or images — AI extracts and formats your estimate instantly.</p>
+            </div>
             <div
+              className="upload-zone"
+              style={{ height: 280 }}
               onClick={() => document.getElementById('uploader').click()}
-              className="group relative h-80 border-2 border-dashed border-slate-300 bg-white rounded-[2rem] flex flex-col items-center justify-center cursor-pointer hover:border-[#1a4b8c] hover:bg-slate-50 transition-all shadow-xl shadow-slate-200/50"
             >
-              <div className="bg-slate-50 p-6 rounded-3xl group-hover:scale-110 transition-transform shadow-sm mb-6">
-                <Upload className="w-10 h-10 text-[#1a4b8c]" />
+              <div className="upload-icon-wrapper">
+                <Upload style={{ width: 36, height: 36, color: '#60a5fa' }} />
               </div>
-              <h2 className="text-2xl font-black text-slate-800">Upload Files</h2>
-              <p className="text-slate-400 font-bold text-sm mt-2">Drag & Drop anywhere or Click</p>
-              <div className="mt-8 px-8 py-2.5 bg-slate-100 rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover:bg-[#1a4b8c] group-hover:text-white transition-colors">Select Files</div>
-              <input id="uploader" type="file" className="hidden" multiple onChange={(e) => processFiles(e.target.files)} accept=".pdf,image/*" />
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#e2e8f0', letterSpacing: '-0.01em' }}>Drop files here</h3>
+              <p style={{ color: '#475569', fontSize: 13, fontWeight: 500, marginTop: 6 }}>PDF or images · Multiple files supported</p>
+              <div className="upload-pill">Select Files</div>
+              <input id="uploader" type="file" style={{ display: 'none' }} multiple onChange={(e) => processFiles(e.target.files)} accept=".pdf,image/*" />
+            </div>
+            {/* Format hints */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 20 }}>
+              {['PDF', 'PNG', 'JPG', 'WEBP'].map(fmt => (
+                <div key={fmt} style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#334155', fontSize: 12, fontWeight: 600 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#1e3a5f' }}></div>
+                  {fmt}
+                </div>
+              ))}
             </div>
           </div>
         )}
 
         {viewState === 'preview' && (
-          <div className="flex flex-col gap-8 pb-32 w-full max-w-5xl items-center">
-            <div className="text-slate-400 font-bold uppercase tracking-widest text-xs mb-4">Preview Mode • {currentFiles.length} File(s)</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32, paddingBottom: 128, width: '100%', maxWidth: 900, alignItems: 'center' }}>
+            <div className="preview-badge">
+              <span className="preview-badge-dot"></span>
+              Preview Mode &nbsp;·&nbsp; {currentFiles.length} File{currentFiles.length !== 1 ? 's' : ''} loaded
+            </div>
 
             {pdfDoc && Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1).map(n => (
               <PDFPage key={n} pdfDoc={pdfDoc} pageNum={n} scale={scale} registerCanvas={registerCanvas} />
             ))}
 
             {!pdfDoc && currentFiles.map((file, idx) => (
-              <div key={idx} className="bg-white p-4 rounded-2xl shadow-xl relative group">
-                <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur">Image {idx + 1}</div>
+              <div key={idx} style={{ background: 'white', padding: 16, borderRadius: 16, boxShadow: '0 8px 40px rgba(0,0,0,0.5)', position: 'relative' }}>
+                <div style={{ position: 'absolute', top: 12, left: 12, background: 'rgba(0,0,0,0.6)', color: 'white', padding: '4px 12px', borderRadius: 100, fontSize: 11, fontWeight: 700, backdropFilter: 'blur(8px)' }}>Image {idx + 1}</div>
                 <img
                   src={URL.createObjectURL(file)}
-                  className="max-w-3xl rounded-lg"
+                  style={{ maxWidth: 860, borderRadius: 8, display: 'block' }}
                   ref={(el) => { if (el) registerCanvas(idx + 1, el) }}
                 />
               </div>
