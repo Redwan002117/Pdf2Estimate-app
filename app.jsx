@@ -12,11 +12,34 @@ import PdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 // Both import and worker come from pdfjs-dist@5.4.624 — versions always match
 pdfjsLib.GlobalWorkerOptions.workerSrc = PdfjsWorker;
 
-// --- Module-level rate limiter for Gemini Free Tier (15 RPM) ---
-// Must live outside the component so it persists across re-renders
-const _geminiRequestLog = []; // rolling window of request timestamps
-const GEMINI_MAX_RPM = 14;   // stay 1 under the 15 RPM hard limit
+// --- Persistent rate limiter for Gemini Free Tier (15 RPM) ---
+// Timestamps are stored in localStorage so they survive page reloads.
+// Without this, reloading the page makes the client think the bucket is empty
+// while Gemini's server-side window still counts the previous requests.
+const GEMINI_MAX_RPM = 14;      // 1 below the 15 RPM hard limit
 const GEMINI_WINDOW_MS = 60_000;
+const GEMINI_LS_KEY = 'gemini_rate_log';
+
+const _getRateLog = () => {
+  try {
+    const raw = localStorage.getItem(GEMINI_LS_KEY);
+    const cutoff = Date.now() - GEMINI_WINDOW_MS;
+    const all = raw ? JSON.parse(raw) : [];
+    return all.filter(t => t > cutoff); // evict expired entries on read
+  } catch { return []; }
+};
+
+const _pushRateLog = (ts = Date.now()) => {
+  try {
+    const log = _getRateLog();
+    log.push(ts);
+    localStorage.setItem(GEMINI_LS_KEY, JSON.stringify(log));
+  } catch { /* ignore storage errors */ }
+};
+
+const _clearRateLog = () => {
+  try { localStorage.removeItem(GEMINI_LS_KEY); } catch { }
+};
 
 // --- Global: Gemini API Configuration ---
 // API Key is now managed via component state and localStorage
@@ -770,29 +793,24 @@ export default function App() {
 
   // pdfjs is now bundled
 
-  // --- Gemini caller with proactive token-bucket rate limiting ---
+  // --- Gemini caller with localStorage-backed rate limiting ---
   const callGemini = async (payload, model = 'gemini-2.0-flash') => {
-    // Enforce 14 RPM using a persistent module-level rolling-window log
+    // Enforce 14 RPM — bucket persists in localStorage across page reloads
     while (true) {
-      const now = Date.now();
-      // Evict timestamps older than 60s
-      const cutoff = now - GEMINI_WINDOW_MS;
-      while (_geminiRequestLog.length && _geminiRequestLog[0] <= cutoff) {
-        _geminiRequestLog.shift();
-      }
-      if (_geminiRequestLog.length < GEMINI_MAX_RPM) break;
+      const log = _getRateLog();
+      if (log.length < GEMINI_MAX_RPM) break;
 
-      // Bucket is full — sleep until the oldest slot expires
-      const wait = GEMINI_WINDOW_MS - (now - _geminiRequestLog[0]) + 300;
-      console.log(`[Rate Limiter] ${_geminiRequestLog.length}/${GEMINI_MAX_RPM} RPM — waiting ${Math.ceil(wait / 1000)}s`);
+      // Bucket full — wait until the oldest slot rolls out of the 60s window
+      const wait = GEMINI_WINDOW_MS - (Date.now() - log[0]) + 300;
+      console.log(`[Rate Limiter] ${log.length}/${GEMINI_MAX_RPM} RPM — waiting ${Math.ceil(wait / 1000)}s`);
       setProgressMsg(`Waiting ${Math.ceil(wait / 1000)}s (API rate limit)...`);
       await new Promise(r => setTimeout(r, wait));
     }
 
     // Claim a slot
-    _geminiRequestLog.push(Date.now());
+    _pushRateLog();
 
-    // Execute request — retry only on transient 5xx, not on 4xx
+    // Execute — retry only on 5xx; handle 429 as safety net
     let lastError = null;
     for (let i = 0; i < 3; i++) {
       try {
@@ -806,14 +824,17 @@ export default function App() {
         );
         if (response.ok) return await response.json();
 
-        const errorText = await response.text();
         lastError = new Error(`AI API Error: ${response.status}`);
 
         if (response.status === 429) {
-          // Safety net — drain the log and wait a full minute
-          console.warn('[Rate Limiter] 429 received — resetting bucket and waiting 60s');
+          // Bucket out of sync with server — mark a full window of slots used,
+          // then wait for them to expire before retrying
+          console.warn('[Rate Limiter] 429 — filling bucket and waiting 60s');
           setProgressMsg('API rate limited — waiting 60s...');
-          _geminiRequestLog.length = 0;
+          const now = Date.now();
+          _clearRateLog();
+          // Record GEMINI_MAX_RPM slots at "now" so the bucket stays full for 60s
+          for (let s = 0; s < GEMINI_MAX_RPM; s++) _pushRateLog(now);
           await new Promise(r => setTimeout(r, 60_000));
           continue;
         }
