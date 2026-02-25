@@ -12,6 +12,12 @@ import PdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 // Both import and worker come from pdfjs-dist@5.4.624 — versions always match
 pdfjsLib.GlobalWorkerOptions.workerSrc = PdfjsWorker;
 
+// --- Module-level rate limiter for Gemini Free Tier (15 RPM) ---
+// Must live outside the component so it persists across re-renders
+const _geminiRequestLog = []; // rolling window of request timestamps
+const GEMINI_MAX_RPM = 14;   // stay 1 under the 15 RPM hard limit
+const GEMINI_WINDOW_MS = 60_000;
+
 // --- Global: Gemini API Configuration ---
 // API Key is now managed via component state and localStorage
 
@@ -764,35 +770,29 @@ export default function App() {
 
   // pdfjs is now bundled
 
-  // --- Proactive Token Bucket for Gemini Free Tier (15 RPM) ---
-  // Tracks timestamps of recent requests in a 60s window.
-  // Before each request, waits until there's a free slot.
+  // --- Gemini caller with proactive token-bucket rate limiting ---
   const callGemini = async (payload, model = 'gemini-2.0-flash') => {
-    const MAX_RPM = 14; // stay under free-tier limit of 15
-    const WINDOW_MS = 60_000;
-
-    // Shared across all calls in this session (module-level via ref would be cleaner,
-    // but closure on the component works fine since App is a singleton)
-    if (!callGemini._timestamps) callGemini._timestamps = [];
-    const ts = callGemini._timestamps;
-
-    // Wait until there's a slot in the rolling 60s window
+    // Enforce 14 RPM using a persistent module-level rolling-window log
     while (true) {
       const now = Date.now();
-      // Drop timestamps older than 60s
-      callGemini._timestamps = ts.filter(t => now - t < WINDOW_MS);
-      if (callGemini._timestamps.length < MAX_RPM) break;
-      const oldest = callGemini._timestamps[0];
-      const wait = WINDOW_MS - (now - oldest) + 200; // +200ms buffer
-      console.log(`Rate bucket full (${callGemini._timestamps.length}/${MAX_RPM} RPM). Waiting ${Math.ceil(wait / 1000)}s...`);
-      setProgressMsg(`AI rate limit: waiting ${Math.ceil(wait / 1000)}s before next request...`);
+      // Evict timestamps older than 60s
+      const cutoff = now - GEMINI_WINDOW_MS;
+      while (_geminiRequestLog.length && _geminiRequestLog[0] <= cutoff) {
+        _geminiRequestLog.shift();
+      }
+      if (_geminiRequestLog.length < GEMINI_MAX_RPM) break;
+
+      // Bucket is full — sleep until the oldest slot expires
+      const wait = GEMINI_WINDOW_MS - (now - _geminiRequestLog[0]) + 300;
+      console.log(`[Rate Limiter] ${_geminiRequestLog.length}/${GEMINI_MAX_RPM} RPM — waiting ${Math.ceil(wait / 1000)}s`);
+      setProgressMsg(`Waiting ${Math.ceil(wait / 1000)}s (API rate limit)...`);
       await new Promise(r => setTimeout(r, wait));
     }
 
-    // Record this request slot
-    callGemini._timestamps.push(Date.now());
+    // Claim a slot
+    _geminiRequestLog.push(Date.now());
 
-    // Execute with retry only for transient server errors
+    // Execute request — retry only on transient 5xx, not on 4xx
     let lastError = null;
     for (let i = 0; i < 3; i++) {
       try {
@@ -807,18 +807,18 @@ export default function App() {
         if (response.ok) return await response.json();
 
         const errorText = await response.text();
-        lastError = new Error(`AI API Error: ${response.status} ${errorText}`);
+        lastError = new Error(`AI API Error: ${response.status}`);
 
         if (response.status === 429) {
-          // Bucket was bypassed somehow — wait 60s and retry once
-          console.warn('Unexpected 429 — waiting 60s');
-          setProgressMsg('Rate limited by API — waiting 60s...');
+          // Safety net — drain the log and wait a full minute
+          console.warn('[Rate Limiter] 429 received — resetting bucket and waiting 60s');
+          setProgressMsg('API rate limited — waiting 60s...');
+          _geminiRequestLog.length = 0;
           await new Promise(r => setTimeout(r, 60_000));
-          callGemini._timestamps = []; // reset so next call goes immediately
           continue;
         }
 
-        if (response.status < 500) break; // 4xx non-rate errors: don't retry
+        if (response.status < 500) break;
       } catch (err) { lastError = err; }
 
       await new Promise(r => setTimeout(r, Math.pow(2, i) * 2000));
