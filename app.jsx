@@ -8,11 +8,16 @@ import {
 import html2pdf from 'html2pdf.js';
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Ensure PDF.js worker is correctly configured for the production bundle
-if (typeof window !== 'undefined' && 'pdfjsLib' in window) {
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js`;
+
+// Use a stable, matched version of PDF.js and its worker
+const PDFJS_VERSION = '4.10.38';
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
+
+// Ensure it's also set on the window if other components look there
+if (typeof window !== 'undefined') {
+  window.pdfjsLib = pdfjsLib;
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
 }
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js`;
 
 // --- Global: Gemini API Configuration ---
 // --- Global: Gemini API Configuration ---

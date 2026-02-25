@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.32] - 2026-02-25
+### Fixes
+- **PDF.js**: Downgraded library to v4.10.38 and synchronized worker URL to resolve persistent `workerSrc` error in production.
+
 ## [v2.0.31] - 2026-02-25
 ### Fixes
 - **PDF.js**: Fixed runtime error by switching from global `window.pdfjsLib` to imported module reference and stabilizing worker source URL.

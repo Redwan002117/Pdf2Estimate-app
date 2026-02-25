@@ -1,7 +1,7 @@
 {
     "name": "pdf2estimate-app",
     "private": true,
-    "version": "2.0.31",
+    "version": "2.0.32",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -12,7 +12,7 @@
     "dependencies": {
         "html2pdf.js": "^0.14.0",
         "lucide-react": "^0.344.0",
-        "pdfjs-dist": "^5.4.624",
+        "pdfjs-dist": "4.10.38",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
