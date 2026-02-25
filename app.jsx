@@ -8,8 +8,11 @@ import {
 import html2pdf from 'html2pdf.js';
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Set PDF.js worker source for production build
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Ensure PDF.js worker is correctly configured for the production bundle
+if (typeof window !== 'undefined' && 'pdfjsLib' in window) {
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js`;
+}
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js`;
 
 // --- Global: Gemini API Configuration ---
 // --- Global: Gemini API Configuration ---
@@ -730,7 +733,7 @@ export default function App() {
       setIsProcessing(true);
       setProgressMsg("Loading PDF...");
       const buffer = await fileList[0].arrayBuffer();
-      const loadedPdf = await window.pdfjsLib.getDocument(buffer).promise;
+      const loadedPdf = await pdfjsLib.getDocument(buffer).promise;
       setPdfDoc(loadedPdf);
       setCurrentFiles([fileList[0]]);
       setViewState('preview');
