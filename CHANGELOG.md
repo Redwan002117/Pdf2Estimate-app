@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.30] - 2026-02-25
+### Fixes
+- **PDF.js**: Fixed runtime error `No "GlobalWorkerOptions.workerSrc" specified` in production build by explicitly setting worker source.
+
 ## [v2.0.29] - 2026-02-25
 ### Features
 - **AI Integration**: Implemented Automated Intelligence Routing.

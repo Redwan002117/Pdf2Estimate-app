@@ -8,6 +8,9 @@ import {
 import html2pdf from 'html2pdf.js';
 import * as pdfjsLib from 'pdfjs-dist';
 
+// Set PDF.js worker source for production build
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
 // --- Global: Gemini API Configuration ---
 // --- Global: Gemini API Configuration ---
 // API Key is now managed via component state and localStorage
