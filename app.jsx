@@ -499,7 +499,6 @@ const PDFPage = ({ pdfDoc, pageNum, scale, registerCanvas }) => {
 
 // --- Main App Component ---
 export default function App() {
-  const pdfjs = useScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', 'pdfjsLib');
 
   const [currentFiles, setCurrentFiles] = useState([]);
   const [viewState, setViewState] = useState('upload'); // upload, preview, extraction, pdf2estimate
@@ -527,20 +526,16 @@ export default function App() {
     canvasRefs.current[id] = canvas;
   }, []);
 
-  useEffect(() => {
-    if (pdfjs.loaded && window.pdfjsLib) {
-      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    }
-  }, [pdfjs.loaded]);
+  // pdfjs is now bundled
 
-  const callGemini = async (payload) => {
+  const callGemini = async (payload, model = 'gemini-1.5-flash') => {
     let lastError = null;
     const maxRetries = 5;
 
     for (let i = 0; i < maxRetries; i++) {
       try {
         const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -576,7 +571,7 @@ export default function App() {
 
     try {
       const pageIds = Object.keys(canvasRefs.current).sort((a, b) => parseInt(a) - parseInt(b));
-      if (pageIds.length === 0) throw new Error("No pages rendered to process. Please wait for the preview to load.");
+      // Removed check for window.pdfjsLib since it's bundled
 
       let allItems = [];
       let detectedAddress = "";
@@ -603,7 +598,7 @@ export default function App() {
               }
             }
           }
-        });
+        }, 'gemini-1.5-flash');
 
         const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
         if (!text) continue;
@@ -669,7 +664,7 @@ export default function App() {
             }
           }
         }
-      });
+      }, 'gemini-1.5-pro');
 
       const parsedChars = JSON.parse(searchResult.candidates?.[0]?.content?.parts?.[0]?.text || "{}");
       if (parsedChars) characteristics = parsedChars;
@@ -707,7 +702,7 @@ export default function App() {
           parts: [{ text: `Estimate property characteristics for: "${address}". \n\nOutput Valid JSON only: { "structureType": "Single Family Residence", "stories": "1", "livingArea": "1500", "bedrooms": "3", "baths": "2", "yearBuilt": "1980", "quality": "Average" }. \n\nIf exact details unknown, provide reasonable estimates based on location/market.` }]
         }],
         generationConfig: { responseMimeType: "application/json" }
-      });
+      }, 'gemini-1.5-flash');
 
       const newChars = parseResponse(fastResult);
       setRepairData(prev => ({
@@ -843,6 +838,14 @@ export default function App() {
                   <p className="text-[10px] text-slate-400">Key is saved locally in your browser.</p>
                 </div>
                 <div className="mb-4">
+                  <label className="block text-sm font-bold text-slate-700 mb-1">AI Intelligence</label>
+                  <div className="flex items-center gap-2 bg-blue-50 p-2 rounded border border-blue-100">
+                    <Sparkles className="w-3 h-3 text-blue-600" />
+                    <span className="text-[10px] font-bold text-blue-800 uppercase tracking-tighter">Automated Model Selection Active</span>
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-1 italic">Optimal models routed per task.</p>
+                </div>
+                <div className="mb-4">
                   <label className="block text-sm font-bold text-slate-700 mb-1">Logo URL / Upload</label>
                   <input
                     type="text"
@@ -884,11 +887,18 @@ export default function App() {
                   onClick={() => {
                     const element = document.getElementById('pdf2estimate-pdf');
                     const opt = {
-                      margin: 0,
-                      filename: 'Estimate_Report.pdf',
+                      margin: [0, 0, 0, 0],
+                      filename: `Estimate_${repairData?.address?.replace(/[^a-z0-9]/gi, '_') || 'Report'}.pdf`,
                       image: { type: 'jpeg', quality: 0.98 },
-                      html2canvas: { scale: 2, useCORS: true },
-                      jsPDF: { unit: 'px', format: [909, 1286], orientation: 'portrait' }
+                      html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        letterRendering: true,
+                        allowTaint: true
+                      },
+                      jsPDF: { unit: 'px', format: [909, 1286], orientation: 'portrait', compress: true },
+                      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                     };
                     html2pdf().set(opt).from(element).save();
                   }}
