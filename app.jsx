@@ -810,8 +810,9 @@ export default function App() {
     // Claim a slot
     _pushRateLog();
 
-    // Execute — retry only on 5xx; handle 429 as safety net
+    // Execute — retry only on 5xx; handle 429 as safety net (max 1 retry)
     let lastError = null;
+    let quota429 = 0;
     for (let i = 0; i < 3; i++) {
       try {
         const response = await fetch(
@@ -827,20 +828,25 @@ export default function App() {
         lastError = new Error(`AI API Error: ${response.status}`);
 
         if (response.status === 429) {
-          // Bucket out of sync with server — mark a full window of slots used,
-          // then wait for them to expire before retrying
+          quota429++;
+          if (quota429 >= 2) {
+            // Two 429s in a row = daily/hourly quota likely exceeded, not just RPM
+            throw new Error('QuotaExceeded: API rate limit cannot be resolved by waiting. Your free-tier quota may be exhausted for today. Try again later or reduce the number of pages.');
+          }
           console.warn('[Rate Limiter] 429 — filling bucket and waiting 60s');
-          setProgressMsg('API rate limited — waiting 60s...');
+          setProgressMsg('API rate limited — waiting 60s then retrying once...');
           const now = Date.now();
           _clearRateLog();
-          // Record GEMINI_MAX_RPM slots at "now" so the bucket stays full for 60s
           for (let s = 0; s < GEMINI_MAX_RPM; s++) _pushRateLog(now);
           await new Promise(r => setTimeout(r, 60_000));
           continue;
         }
 
         if (response.status < 500) break;
-      } catch (err) { lastError = err; }
+      } catch (err) {
+        if (err.message.startsWith('QuotaExceeded')) throw err; // propagate immediately
+        lastError = err;
+      }
 
       await new Promise(r => setTimeout(r, Math.pow(2, i) * 2000));
     }
@@ -902,11 +908,6 @@ export default function App() {
         }
 
         if (!detectedAddress && parsed.address) detectedAddress = parsed.address;
-
-        if (id !== pageIds[pageIds.length - 1]) {
-          setProgressMsg(`Scanning Page ${id}... (Cooling down API)`);
-          await new Promise(r => setTimeout(r, 6000));
-        }
       }
 
       setExtractedData({ address: detectedAddress || "Unknown Address", items: allItems });
