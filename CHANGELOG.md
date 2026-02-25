@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.29] - 2026-02-25
+### Features
+- **AI Integration**: Implemented Automated Intelligence Routing.
+    - Automatically selects `gemini-1.5-flash` for fast OCR/Extraction.
+    - Automatically selects `gemini-1.5-pro` for deep property analysis and Search-enabled research.
+- **UI/UX**: Simplified Settings panel by removing manual model selection.
+- **PDF**: Dynamic naming (uses address) and improved multi-page layout stability.
+### Fixes
+- **AI API**: Resolved 404 error when using preview models by switching to stable versions.
+- **Build**: Resolved dependency issues with `pdfjs-dist` worker distribution.
+
 ## [v2.0.28] - 2026-01-27
 ### Fixes
 -   **Icons**: Converted Favicon paths to **Absolute URLs** (`https://bid.rico.bd/favicon.svg`).
